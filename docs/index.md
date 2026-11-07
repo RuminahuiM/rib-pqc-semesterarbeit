@@ -10,6 +10,8 @@
 
 Diese Seite ist die Dokumentation meiner 3. Semesterarbeit.
 
+> **Hinweis zu den Jira-Links:** Die Links auf Jira-Tickets (rumidesigns.atlassian.net) waren für die betreuenden Lehrpersonen gedacht und sind öffentlich nicht zugänglich.
+
 ## Worum geht es?
 
 Klassische asymmetrische Kryptografie wie RSA und ECC wird durch ausreichend grosse Quantencomputer brechbar. Seit August 2024 gibt es mit FIPS 203, 204 und 205 die ersten NIST-Standards für Post-Quanten-Kryptografie (PQC). In dieser Arbeit habe ich einen Authentifizierungs-Microservice in Python (FastAPI) gebaut, der diese Standards praktisch einsetzt, demonstriert über eine minimale React-Native-App.
