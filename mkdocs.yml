@@ -1,0 +1,192 @@
+site_name: PQC Auth-Service
+site_description: "Post-Quanten-Kryptografie in einem Python-Authentifizierungsservice. Semesterarbeit 3, ITCNE25, TBZ HF"
+site_author: Dodoe Rumiñahui Mannale
+site_url: https://ruminahuim.github.io/rib-pqc-semesterarbeit/
+repo_url: https://github.com/RuminahuiM/rib-pqc-semesterarbeit
+repo_name: RuminahuiM/rib-pqc-semesterarbeit
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: de
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Dunkles Design
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Helles Design
+
+markdown_extensions:
+  - tables
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - toc:
+      permalink: true
+      # GitHub-kompatible Anker (Umlaute bleiben erhalten), damit die
+      # Links aus dem Produkt-Repo hier gleich funktionieren
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      lang: de
+
+validation:
+  links:
+    anchors: warn
+
+nav:
+  - Start: index.md
+  - Projektdokumentation: projektdokumentation.md
+  - Projekt:
+      - projekt/index.md
+      - "Einreichungsformular: Inhaltlicher Entwurf": projekt/01_form_draft.md
+      - "PQC Technical Brief: Implementing Post-Quantum Cryptography in a Python Authentication Service": projekt/02_pqc_technical_brief.md
+      - "Architektur-Entscheidung: Scope des Auth-Services": projekt/03_entscheidung_auth_architektur.md
+      - "Quellen-Arbeitsdokument": projekt/04_quellen.md
+      - "Requirements: PQC Auth-Service mit Identity Broker und E2E PQ-Kommunikation": projekt/05_requirements.md
+      - "Tech-Stack: PQC Auth-Service mit Identity Broker": projekt/06_tech_stack.md
+      - "Design: PQC Auth-Service mit Identity Broker und E2E PQ-Kommunikation": projekt/07_design.md
+      - "Scrum-Setup: Implementing PQC": projekt/08_scrum_setup.md
+      - "Product Backlog: Implementing PQC": projekt/09_product_backlog.md
+      - "Jira-Setup und Backlog-Transfer": projekt/10_jira_setup.md
+      - "Risk Register": projekt/11_risk_register.md
+      - "Traceability-Matrix: Requirements bis Bewertungskriterien": projekt/12_traceability_matrix.md
+      - "Deferred Findings": projekt/13_deferred_findings.md
+      - "Performance Results (QUA-6/7/8)": projekt/14_performance_results.md
+      - "Wire-Format und Krypto-Artefakte": projekt/wire_format.md
+      - ADR:
+          - projekt/adr/index.md
+          - "ADR-001: Identity Broker mit PQ-Uplift statt Full-OIDC-Provider": projekt/adr/ADR-001-identity-broker-mit-pq-uplift.md
+          - "ADR-002: PQ auf zwei Ebenen (TLS-Layer und Application-Layer)": projekt/adr/ADR-002-pq-auf-zwei-ebenen.md
+          - "ADR-003: liboqs-python (Server) und @noble/post-quantum (Mobile)": projekt/adr/ADR-003-crypto-bibliotheken.md
+          - "ADR-004: JWS-Compact-Token mit ML-DSA-65 trotz fehlendem JOSE-Standard": projekt/adr/ADR-004-jws-format-mit-ml-dsa.md
+          - "ADR-005: Microsoft-App-Registrierung als Single-Tenant": projekt/adr/ADR-005-microsoft-single-tenant.md
+          - "ADR-006: Expo SDK 54 fix fuer den Projekt-Lebenszyklus": projekt/adr/ADR-006-expo-sdk-54.md
+  - Sprints:
+      - sprints/index.md
+      - "Sprint 0":
+          - "Review": sprints/sprint_0/03_review.md
+          - "Retrospektive": sprints/sprint_0/04_retrospective.md
+      - "Sprint 1":
+          - "Planning": sprints/sprint_1/01_planning.md
+          - "Daily Journal": sprints/sprint_1/02_daily_journal.md
+          - "Review": sprints/sprint_1/03_review.md
+          - "Retrospektive": sprints/sprint_1/04_retrospective.md
+          - "Jira Story Drafts: Tier-1 Findings aus PQC-19 Code-Review": sprints/sprint_1/jira_drafts_post_pqc19_review.md
+          - Demos:
+              - "D-001 Crypto-Foundation Integration-Demo": sprints/sprint_1/demos/D-001_crypto_foundation.md
+              - "Demo D-002: Broker-Token-Ausstellung (TOK-1)": sprints/sprint_1/demos/D-002_broker_token_issue.md
+              - "Demo D-003: Broker-Token Verify-Pipeline (TOK-2)": sprints/sprint_1/demos/D-003_broker_token_verify.md
+              - "Demo D-004: Local Login Pipeline (Sprint-Goal-Meilenstein)": sprints/sprint_1/demos/D-004_local_login_pipeline.md
+              - "Demo D-005: PQC-TLS-Handshake X25519MLKEM768": sprints/sprint_1/demos/D-005_pqc_tls_handshake.md
+              - "Demo D-006: Mobile-Login auf iPhone via Expo Go": sprints/sprint_1/demos/D-006_mobile_login.md
+          - Evidence:
+              - "Evidence: PQC-17 (INF-3) - Docker-Compose-Skeleton lauft": sprints/sprint_1/evidence/PQC-17_INF-3_compose_up.md
+              - "Evidence: PQC-18 INF-4 oqs-provider-fähiges nginx-Image": sprints/sprint_1/evidence/PQC-18_INF-4_oqs_nginx.md
+              - "Evidence: PQC-19 (SKL-1) - FastAPI-Skeleton mit Config-Loading": sprints/sprint_1/evidence/PQC-19_SKL-1_fastapi_skeleton.md
+              - "Evidence: PQC-20 SKL-2 Expo-Skeleton mit Navigation und drei Screens": sprints/sprint_1/evidence/PQC-20_SKL-2_expo_skeleton.md
+              - "Evidence: PQC-21 (CRY-1) - Algorithm Registry fuer KEM und Signature": sprints/sprint_1/evidence/PQC-21_CRY-1_algorithm_registry.md
+              - "Evidence: PQC-22 (CRY-2) - Crypto-Facade fuer sign/verify": sprints/sprint_1/evidence/PQC-22_CRY-2_crypto_facade.md
+              - "Evidence: PQC-25 (CRY-5) - liboqs-python Wrapper fuer ML-DSA-65": sprints/sprint_1/evidence/PQC-25_CRY-5_liboqs_ml_dsa.md
+              - "Evidence: PQC-28 (AUT-1) - User-Store mit SQLAlchemy 2.0 und Argon2id": sprints/sprint_1/evidence/PQC-28_AUT-1_user_store.md
+              - "Evidence: PQC-29 (AUT-2) - Admin-CLI fuer User-Provisioning": sprints/sprint_1/evidence/PQC-29_AUT-2_admin_cli.md
+              - "Evidence: PQC-31 (AUT-4) - User-Enumeration-Schutz": sprints/sprint_1/evidence/PQC-31_AUT-4_user_enumeration_schutz.md
+              - "Evidence: PQC-32 (TOK-1) - Broker-Token-Ausstellung mit ML-DSA-65": sprints/sprint_1/evidence/PQC-32_TOK-1_broker_token_ausstellung.md
+              - "Evidence: PQC-33 (TOK-2) - Broker-Token-Verifikation mit ML-DSA-65": sprints/sprint_1/evidence/PQC-33_TOK-2_broker_token_verifikation.md
+              - "Evidence: PQC-54 APP-1 Login-Screen mit drei Optionen (UI only)": sprints/sprint_1/evidence/PQC-54_APP-1_login_screen.md
+              - "Evidence: PQC-57 APP-4 AuthContext (globaler Auth-State)": sprints/sprint_1/evidence/PQC-57_APP-4_auth_context.md
+              - "Evidence: PQC-62 APP-9 Token-Persistenz mit expo-secure-store": sprints/sprint_1/evidence/PQC-62_APP-9_token_persistence.md
+              - "Evidence: PQC-63 QUA-1 Pytest-Setup": sprints/sprint_1/evidence/PQC-63_QUA-1_pytest_setup.md
+              - "Evidence: PQC-64 QUA-2 Unit-Tests Auth-Module": sprints/sprint_1/evidence/PQC-64_QUA-2_unit_tests_auth.md
+              - "Evidence: PQC-65 QUA-3 Unit-Tests Token- und Crypto-Module": sprints/sprint_1/evidence/PQC-65_QUA-3_unit_tests_token_crypto.md
+              - "Evidence: PQC-79 (SEC-1) - Request-ID Middleware mit structlog-Context": sprints/sprint_1/evidence/PQC-79_SEC-1_request_id_middleware.md
+              - "Evidence: PQC-80 (SEC-2) - CORS-Middleware mit Allowlist-Konfiguration": sprints/sprint_1/evidence/PQC-80_SEC-2_cors_middleware.md
+              - "Evidence: PQC-81 (SEC-3) - TrustedHostMiddleware gegen Host-Header-Injection": sprints/sprint_1/evidence/PQC-81_SEC-3_trusted_host_middleware.md
+              - "Evidence: PQC-82 (SEC-4) - Security-Headers-Middleware": sprints/sprint_1/evidence/PQC-82_SEC-4_security_headers.md
+              - "Evidence: PQC-83 SEC-5 Rate-Limiting": sprints/sprint_1/evidence/PQC-83_SEC-5_rate_limiting.md
+      - "Sprint 2":
+          - "Planning": sprints/sprint_2/01_planning.md
+          - "Daily Journal": sprints/sprint_2/02_daily_journal.md
+          - "Review": sprints/sprint_2/03_review.md
+          - "Retrospektive": sprints/sprint_2/04_retrospective.md
+          - Demos:
+              - "Demo D-007: PQ-TLS-Handshake Verifikation via verify_pq_tls.sh": sprints/sprint_2/demos/D-007_pq_tls_handshake_verify.md
+          - Evidence:
+              - "Evidence: PQC-36 BRK-1 External-IdP-Registry": sprints/sprint_2/evidence/PQC-36_BRK-1_idp_registry.md
+              - "Evidence: PQC-37 BRK-2 OIDC Authorization Code Flow mit PKCE": sprints/sprint_2/evidence/PQC-37_BRK-2_oidc_code_flow_pkce.md
+              - "Evidence: PQC-38 BRK-3 ID-Token-Verifikation": sprints/sprint_2/evidence/PQC-38_BRK-3_id_token_verify.md
+              - "Evidence: PQC-39 BRK-4 Identity-Normalisierung": sprints/sprint_2/evidence/PQC-39_BRK-4_identity_normalisierung.md
+              - "Evidence: PQC-40 BRK-5 Google IdP-Plugin": sprints/sprint_2/evidence/PQC-40_BRK-5_google_idp_plugin.md
+              - "Evidence: PQC-41 BRK-6 Microsoft IdP-Plugin": sprints/sprint_2/evidence/PQC-41_BRK-6_microsoft_idp_plugin.md
+              - "Evidence: PQC-42 BRK-7 CSRF/State+PKCE Server-managed": sprints/sprint_2/evidence/PQC-42_BRK-7_csrf_state_pkce.md
+              - "Evidence: PQC-43 TLS-1 nginx X25519MLKEM768": sprints/sprint_2/evidence/PQC-43_TLS-1_nginx_x25519mlkem768.md
+              - "Evidence: PQC-44 TLS-2 Verifikation PQ-Handshake": sprints/sprint_2/evidence/PQC-44_TLS-2_pq_handshake_verification.md
+              - "Evidence: PQC-45 TLS-3 nginx Reverse Proxy 443": sprints/sprint_2/evidence/PQC-45_TLS-3_nginx_reverse_proxy_443.md
+              - "Evidence: PQC-60 APP-7 Google-Login App-Seite": sprints/sprint_2/evidence/PQC-60_APP-7_google_login.md
+              - "Evidence: PQC-61 APP-8 Microsoft-Login App-Seite": sprints/sprint_2/evidence/PQC-61_APP-8_microsoft_login.md
+              - "Evidence: PQC-84 BRK-0 OAuth-Apps bei Google und Microsoft registrieren": sprints/sprint_2/evidence/PQC-84_BRK-0_oauth_app_setup.md
+      - "Sprint 3":
+          - "Planning": sprints/sprint_3/01_planning.md
+          - "Daily Journal": sprints/sprint_3/02_daily_journal.md
+          - "Review": sprints/sprint_3/03_review.md
+          - "Retrospektive": sprints/sprint_3/04_retrospective.md
+          - Demos:
+              - "Demo D-008-Vorlaeufer: Session-Init mit Algorithmus-Negotiation": sprints/sprint_3/demos/D-008-vorlaeufer_session_init_with_negotiation.md
+              - "Demo D-008: End-to-End-Roundtrip (PQ-Session + Encrypted /api/profile)": sprints/sprint_3/demos/D-008_end_to_end_roundtrip.md
+          - Evidence:
+              - "Evidence: PQC-23 CRY-3 Crypto-Facade KEM + HKDF + AEAD": sprints/sprint_3/evidence/PQC-23_CRY-3_crypto_facade_kem_hkdf_aead.md
+              - "Evidence: PQC-24 CRY-4 liboqs-python ML-KEM Wrapper": sprints/sprint_3/evidence/PQC-24_CRY-4_liboqs_ml_kem.md
+              - "Evidence: PQC-26 CRY-6 Client-Side Crypto-Abstraction (App)": sprints/sprint_3/evidence/PQC-26_CRY-6_client_side_crypto_abstraction.md
+              - "Evidence: PQC-27 CRY-7 Algorithmus-Identifier in Krypto-Artefakten": sprints/sprint_3/evidence/PQC-27_CRY-7_algorithm_identifiers.md
+              - "Evidence: PQC-46 SES-1 POST /session/init mit ML-KEM-Encapsulation": sprints/sprint_3/evidence/PQC-46_SES-1_session_init_router.md
+              - "Evidence: PQC-47 SES-2 HKDF-Session-Key-Ableitung": sprints/sprint_3/evidence/PQC-47_SES-2_hkdf_session_key.md
+              - "Evidence: PQC-48 SES-3 Session-Store mit TTL (Redis)": sprints/sprint_3/evidence/PQC-48_SES-3_session_store_redis.md
+              - "Evidence: PQC-49 SES-4 Algorithmus-Negotiation": sprints/sprint_3/evidence/PQC-49_SES-4_algorithm_negotiation.md
+              - "Evidence: PQC-50 DCH-1 AES-256-GCM Encrypt/Decrypt Wrapper": sprints/sprint_3/evidence/PQC-50_DCH-1_aes_gcm_wrapper.md
+              - "Evidence PQC-51 DCH-2: Header-basiertes Session-Routing": sprints/sprint_3/evidence/PQC-51_DCH-2_authenticated_session_dependency.md
+              - "Evidence PQC-52 DCH-3: Geschuetzter API-Endpoint /api/profile": sprints/sprint_3/evidence/PQC-52_DCH-3_api_profile_endpoint.md
+              - "Evidence PQC-53 DCH-4: Replay-Schutz via Nonce-Tracking": sprints/sprint_3/evidence/PQC-53_DCH-4_replay_schutz_nonce_tracking.md
+      - "Sprint 4":
+          - "Planning": sprints/sprint_4/01_planning.md
+          - "Daily Journal": sprints/sprint_4/02_daily_journal.md
+          - "Review": sprints/sprint_4/03_review.md
+          - "Retrospektive": sprints/sprint_4/04_retrospective.md
+          - Demos:
+              - "Demo D-009: Mobile End-to-End (Login bis entschluesseltes Profil auf dem iPhone)": sprints/sprint_4/demos/D-009_mobile_end_to_end.md
+          - Evidence:
+              - "Evidence PQC-66 QUA-4: Integration-Tests Broker-Flow": sprints/sprint_4/evidence/PQC-66_QUA-4_integration_tests_broker_flow.md
+              - "Evidence PQC-67 QUA-5: End-to-End-Integration-Test": sprints/sprint_4/evidence/PQC-67_QUA-5_end_to_end_integration_test.md
+              - "Evidence PQC-71 DOC-1: Schlussbericht": sprints/sprint_4/evidence/PQC-71_DOC-1_schlussbericht.md
+              - "Evidence PQC-72 DOC-2: Schluss-Präsentation (Kolloquium)": sprints/sprint_4/evidence/PQC-72_DOC-2_schluss_praesentation.md
+              - "Evidence PQC-73 DOC-3: README und Setup-Anleitung": sprints/sprint_4/evidence/PQC-73_DOC-3_readme.md
+              - "Evidence PQC-74 DOC-4: Architecture Decision Records": sprints/sprint_4/evidence/PQC-74_DOC-4_adrs.md
+  - Besprechungen:
+      - sprints/mentor_meetings/index.md
+      - "Status-Update Nr. 1 (vor Mentor-Termin am 01.06.2026)": sprints/mentor_meetings/2026-05-24_status_update_pre_meeting_1.md
