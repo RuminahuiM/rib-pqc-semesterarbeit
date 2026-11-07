@@ -19,6 +19,7 @@ Entscheidung, Konsequenzen):
 
 - Entscheidungen aus bestehenden Quellen (docs/03, docs/06, Journals)
   konsolidiert, nichts neu erfunden: erfuellt.
+
 - Im Schlussbericht verlinkt (Abschnitt 9.1) und Teil des
   Uebergabe-Umfangs (12.4): erfuellt.
 

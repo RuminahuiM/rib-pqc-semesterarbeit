@@ -25,6 +25,7 @@ Damit ist Login mit Google funktional (vorbereitet fuer App-Story PQC-60).
 - `routers/auth_federated.py`: Nach `link_or_create` ruft Router
   `token_service.issue(user_id, auth_method, external_sub)` und gibt einen
   ML-DSA-65-signierten Broker-Token (JWS-Compact) im Response zurueck.
+
 - `CallbackResponse` erweitert um `broker_token: str` + `broker_token_expires_in: int`.
 - Pattern identisch zu PQC-30 AUT-3 lokaler Login (`routers/auth.py`),
   damit App-Code einheitlich bleibt (1 Token-Format fuer alle Auth-Methods).
@@ -53,8 +54,10 @@ Ruff `All checks passed`.
   die App-Seite den code_verifier (PKCE) generiert und behaelt. Server-side
   haben wir kein Tool um manuell einen PKCE-Pair zu generieren und den
   vollstaendigen Browser-Flow durchzuziehen ohne App.
+
 - PQC-60 APP-7 implementiert die App-Seite mit `expo-auth-session`, das PKCE
   out-of-the-box managed. Dann laeuft der echte End-to-End-Flow durch.
+
 - AC-5 (Code-Teil: Broker-Token wird ausgestellt) ist via Router-Test
   funktional verifiziert. Real-World-Demo ist Cross-Story-Referenz mit PQC-60.
 

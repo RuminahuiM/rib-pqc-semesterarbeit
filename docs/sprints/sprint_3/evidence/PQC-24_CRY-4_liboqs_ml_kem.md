@@ -26,6 +26,7 @@ ML-KEM-Encapsulation, blocked by CRY-4).
   `decaps(ct, sk) -> ss`. Algorithm-Whitelist hartcodiert auf ML-KEM-768
   und ML-KEM-1024 (CAT-3 und CAT-5 gemaess FIPS 203). Lazy oqs-Import,
   analog zu `LibOqsSignature` aus PQC-25 CRY-5.
+
 - `server/tests/test_liboqs_kem.py` (17 Tests): Algorithm-Whitelist,
   parametrisierte Roundtrip-Tests fuer ML-KEM-768/1024, FIPS-203-Output-
   Groessen, Fresh-Randomness-Properties, Implicit-Rejection,
@@ -36,6 +37,7 @@ ML-KEM-Encapsulation, blocked by CRY-4).
 - `server/crypto/registry_init.py`: Production-KEM-Pfad nutzt jetzt
   `LibOqsKem` statt `PlaceholderKem`. Placeholder bleibt als Test-Hilfsmittel
   fuer Unit-Tests die liboqs nicht laden wollen.
+
 - `server/crypto/registry.py`: Docstring der KemPlugin-Klasse aktualisiert
   von "z.B. PQC-25 LibOqsKem" (war falsch, PQC-25 ist Signature) auf
   "LibOqsKem aus PQC-24 CRY-4".
@@ -68,8 +70,10 @@ nicht ueber den KEM-Decap-Output. Siehe F-090 fuer SES-1- und DCH-1-Bezug.
   der Sandbox via `pytest.importorskip("oqs")` auf Modul-Ebene
   uebersprungen. Im Docker-Container laeuft liboqs und die 17 Tests
   werden voll ausgefuehrt.
+
 - `ruff check crypto/adapters/liboqs_kem.py crypto/registry_init.py
   tests/test_liboqs_kem.py` All checks passed.
+
 - `ruff format` alle CRY-4-Files passieren format-check (1 pre-existing
   format-Issue in `crypto/facade.py` aus PQC-22, nicht aus CRY-4).
 
@@ -118,9 +122,11 @@ Polish-/Tracking-Material fuer Folgestories oder Sprint 4.
 - **PQC-23 CRY-3 Crypto-Facade KEM/HKDF/AEAD:** baut auf LibOqsKem auf,
   ergaenzt HKDF und AEAD-Methoden in der Facade. Dann sind alle
   Foundation-Krypto-Bausteine Server-seitig vorhanden.
+
 - **PQC-46 SES-1 POST /session/init mit ML-KEM-Encap:** erster konkreter
   Konsument von LibOqsKem. Hier wird F-090 (Implicit-Rejection
   Authentication-Layer) zum ersten Mal scharf.
+
 - **PQC-26 CRY-6 Client-Side Crypto-Abstraction (App):** App-Pendant via
   `@noble/post-quantum` ml-kem768. Interop-Test gegen LibOqsKem zeigt dann
   ob die Crypto-Agility ueber Sprachen-Grenzen funktioniert.

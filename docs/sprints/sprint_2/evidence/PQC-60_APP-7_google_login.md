@@ -34,6 +34,7 @@ redirect_uri-Architektur (siehe F-086).
 - `app/src/app/login.tsx`: `handleOAuthPlaceholder("Google")` ersetzt durch
   `handleGoogleLogin()` mit echtem Flow. Microsoft bleibt Placeholder
   fuer PQC-61. JSdoc-Header aktualisiert mit F-086-Hinweis.
+
 - `app/package.json`: `expo-crypto ~15.0.7` zu deps.
 
 **Architektur-Abweichung von AC-4 (begruendet):**
@@ -64,15 +65,18 @@ loest mit `type=cancel` aus.
 2. App-Bundle-ID + Custom-Scheme (`app://`) registrieren
 3. Server-Config um zweites Provider-Profil ergaenzen (optional
    `idp_providers.google_mobile`) oder bestehende `redirect_uri` anpassen
+
 4. Live-Browser-Demo durchfuehren + Screenshots in Bericht
 
 ## AC-Code-Tests (Sandbox)
 
 - TypeScript-Imports: `loginWithProvider`, `OAuthError`, `generatePkceVerifier`
   resolven korrekt
+
 - `npx tsc --noEmit` zeigt keine TS-Errors in `src/lib/oauthClient.ts` oder
   `src/app/login.tsx` (uebrige TS-Errors in der Codebase sind pre-existing
   aus anderen Files, nicht von PQC-60)
+
 - Backend-Tests unveraendert: 215 passed (kein Server-Code-Change in PQC-60)
 
 ## Closing-Review-Findings
@@ -96,4 +100,5 @@ Keine Must-Fix. 1 Finding:
 - PQC-61 APP-8 (Microsoft-Login): analoger Pattern, `loginWithProvider("microsoft")`
   in Login-Screen. Vermutlich sehr schnell (15-20 min) weil OAuth-Client
   bereits generisch ist.
+
 - F-086 Sprint-3-Action: OAuth-App-Type-Switch fuer Live-Demo.

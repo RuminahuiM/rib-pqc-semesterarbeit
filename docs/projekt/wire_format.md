@@ -43,8 +43,10 @@ werden bei Registry-Init mit `UnsupportedAlgorithmError` abgelehnt.
 - `alg` (string, **Pflicht**): Signatur-Algorithmus. Sprint-3-Whitelist erlaubt
   nur `ML-DSA-65`. `alg=none` und Case-Varianten werden vom TokenService
   abgelehnt (RFC 8725 BCP).
+
 - `kid` (string, **Pflicht**): Key-ID die im Lookup
   `verifying_keys_by_kid` aufgeloest wird. Aktuell `auth-signing-key-v1`.
+
 - `typ` (string, optional): `"JWT"` zur RFC-7519-Kompatibilitaet.
 
 **Payload (JSON):**
@@ -78,6 +80,7 @@ werden bei Registry-Init mit `UnsupportedAlgorithmError` abgelehnt.
 - `kem_alg` (string, **Pflicht**): KEM-Algorithmus den der Client unterstuetzt.
   Server prueft per `CryptoFacade.is_kem_supported`. Bei unbekanntem Wert
   Response 406 `Not Acceptable` mit `supported_algorithms`-Liste (siehe SES-4).
+
 - `encapsulation_key` (string base64url, **Pflicht**): ML-KEM-Public-Key des
   Clients (KEM-Encapsulation-Empfaenger). Laenge je nach `kem_alg`:
   ML-KEM-768 = 1184 Byte, ML-KEM-1024 = 1568 Byte.
@@ -99,11 +102,14 @@ werden bei Registry-Init mit `UnsupportedAlgorithmError` abgelehnt.
   16 Byte, urlsafe-base64). Wird als Redis-Schluessel `session:<id>`
   verwendet und als `X-Session-Id`-Header in nachfolgenden Requests
   mitgeschickt.
+
 - `ciphertext` (string base64url, **Pflicht**): ML-KEM-Ciphertext aus
   `facade.kem_encaps`. Laenge je nach kem_alg: ML-KEM-768 = 1088 Byte,
   ML-KEM-1024 = 1568 Byte. Client decapsuliert mit seinem Secret-Key.
+
 - `expires_in` (integer, **Pflicht**): Sekunden bis Session-TTL Ablauf,
   aus `settings.session.ttl_seconds` (zu ergaenzendes Config-Feld in PQC-48 SES-3) (Default 900 = 15 Minuten).
+
 - `kem_alg` (string, **Pflicht**): Echo des Algorithmus zum Selbst-Deklaration
   der Session.
 
@@ -140,9 +146,11 @@ Request mit einem unterstuetzten Algorithmus wiederholen.
 - `user_id`: aus dem verifizierten Broker-Token sub-Claim.
 - `kem_alg`: zur Selbst-Deklaration. Algorithmus-Wechsel ueber neue
   Session-Init, alte Session bleibt unveraendert bis TTL Expiry.
+
 - `session_key`: HKDF-SHA256-Output aus `facade.hkdf(ikm=shared_secret,
   info=b"app-session-v1", salt=session_id)`. 32 Byte (AES-256-GCM-Key).
   In Redis als base64url-no-pad gespeichert. **Niemals in Logs.**
+
 - `created_at`: unix-Sekunden int, fuer Debug-Forensik.
 - `expires_at`: unix-Sekunden int = created_at + ttl_seconds.
 
@@ -185,13 +193,16 @@ Content-Type: application/octet-stream
 
 - Response-`X-Nonce` ist eine **neue** CSPRNG-Nonce, NICHT die Request-Nonce.
   Server generiert sie via `CryptoFacade.aead_random_nonce()` (PQC-50).
+
 - AAD wie in Sec 5.2: `session_id.encode("ascii")` (symmetrisch zu Request).
 - Response-Nonce wird im NonceTracker registriert (DCH-4-Konvention), damit
   derselbe Wert nicht spaeter als Request-Nonce wiederverwendet werden kann.
   Bei extrem unwahrscheinlicher Kollision (96-bit Birthday 2^48) -> HTTP 500
   `response_nonce_collision`.
+
 - Plaintext-Format pro Endpoint individuell (UTF-8 JSON). UC-5 /api/profile
   liefert `{user_id, email, auth_method, created_at}`.
+
 - Header-Name ist explizit `X-Nonce` (nicht `X-Response-Nonce`). Same Name
   wie Request, Wert ist anders. Server-zu-Client und Client-zu-Server
   Richtungen sind eindeutig.
@@ -269,6 +280,7 @@ Sprint-3-Defaults: `ML-DSA-65` (Signatur), `ML-KEM-768` (KEM), `HKDF-SHA256`
 
 2. **KEM-Algorithmus ersetzen oder zweite Variante zulassen** (z.B. ML-KEM-1024
    parallel zu ML-KEM-768):
+
    - Whitelist erweitern, neuer Adapter wenn nicht ML-KEM (LibOqsKem deckt
      beide ML-KEM-Varianten).
    - Session-Init-Request gibt `kem_alg`-Wert vor, Server akzeptiert wenn

@@ -11,11 +11,14 @@ End-to-End-Pipeline der Session-Etablierung server-seitig:
 1. **Token-Authentifizierung** (HTTPBearer + TokenService.verify, Sprint 1 PQC-32/33).
 2. **Algorithmus-Negotiation** (SES-4 PQC-49): Server lehnt unbekannten
    kem_alg mit 406 + supported_algorithms-Liste ab.
+
 3. **ML-KEM-Encapsulation** (CRY-4 + CRY-3 + SES-1): Server fuehrt
    `facade.kem_encaps(client_pk, kem_alg)` aus.
+
 4. **HKDF-Session-Key-Ableitung** (CRY-3 + SES-2): Server leitet 32-Byte
    AES-256-GCM-Key aus dem shared_secret ab mit session_id als Salt und
    `b"app-session-v1"` als Domain-Info.
+
 5. **Session-Persistenz mit TTL** (SES-3): Redis-Key `session:<id>` mit
    JSON-Record und 900s TTL.
 
@@ -164,8 +167,10 @@ created_at, expires_at.
 
 - **App-Side**: Retry-Loop bei 406, sowie kem.decaps + HKDF auf
   Client-Seite zur Session-Key-Wiederherstellung -> PQC-26 CRY-6.
+
 - **Encrypted Channel**: AES-GCM-Verschluesselung von /api/profile-Calls
   ueber den abgeleiteten Session-Key -> PQC-50/51/52/53 DCH-Layer.
+
 - **Mobile-End-to-End**: iPhone-Expo-App ruft /session/init und etabliert
   PQ-Session -> PQC-56 APP-3 + APP-Stories.
 

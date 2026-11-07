@@ -24,6 +24,7 @@ dokumentiert.
 
 - `docs/wire_format.md` (228 Zeilen): zentrale Spec fuer alle Krypto-
   Artefakte. 7 Sektionen:
+
   - Sec 1: Algorithmus-Whitelisten mit Quell-Refs (registry_init.py).
   - Sec 2: Broker-Token JWS-Compact-Format (bereits live seit Sprint 1).
   - Sec 3: Session-Init Wire-Format (Request, Response 200, 406 SES-4).
@@ -58,10 +59,13 @@ Replay zusaetzlich zum DCH-4 Nonce-Tracking.
 
 - AC-1-Verifikation: bestehende Token-Tests aus Sprint 1 (PQC-32/33)
   pruefen Header-Felder. Keine neuen Tests in CRY-7 noetig.
+
 - AC-2/AC-3-Verifikation: Spec liegt vor, Code-Verifikation kommt mit
   SES-1/SES-3.
+
 - `pytest --no-cov -q` 215 passed, 5 skipped (unveraendert seit
   PQC-23, keine Regressions).
+
 - Markdown-Syntax: docs/wire_format.md rendert sauber (Tabellen, Code-
   Bloecke, Hierarchie konsistent).
 
@@ -105,7 +109,9 @@ Keine Must-/Should-Fixes. Ein Info-Finding fuer Folge-Update der Doku.
 
 - **PQC-48 SES-3 Session-Store mit TTL (Redis):** implementiert das in
   docs/wire_format.md Sec 4 spezifizierte Schema.
+
 - **PQC-46 SES-1 POST /session/init:** implementiert das in Sec 3.1/3.2
   spezifizierte Wire-Format.
+
 - **PQC-52 DCH-3 Geschuetzter /api/profile-Endpoint:** finalisiert Sec 5.3
   (Response-Body-Format).

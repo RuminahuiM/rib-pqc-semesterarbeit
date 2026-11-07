@@ -9,12 +9,14 @@
 ## Was diese Evidence beweist
 
 Der Auth-Service hat jetzt eine persistente User-Schicht:
+
 - SQLite-Datenbank im persistierten `auth-data` Docker-Volume
 - SQLAlchemy 2.0 async-API mit `Mapped[]`-Typing
 - Alembic-Migrations mit idempotentem Auto-Apply beim Container-Start
 - Argon2id-Password-Hashing mit Story-AC-4-Default-Parametern (m=64MB, t=3, p=4)
 - UserRepository-Klasse mit Geschaeftsregel-Validierung (local-XOR-federated,
   Email-Normalisierung, Duplicate-Detection)
+
 - PasswordHasher mit `verify`, `needs_rehash`, `dummy_verify` (AUT-4-vorbereitet)
 
 Damit ist die Foundation fuer AUT-2 (Admin-CLI), AUT-3 (Login-Endpoint),
@@ -91,6 +93,7 @@ ALL CRUD-DEMO SCENARIOS PASSED
 | AC-5 | Unit-Tests: User anlegen, finden via email, password-hash-vergleich | 35 Tests in `tests/test_user_repository.py` (24 Tests) plus `tests/test_password.py` (11 Tests). Alle gruen im Sandbox (51 passed gesamt). |
 
 Zusatzlich (ueber AC-5 hinaus):
+
 - Geschaeftsregel-Validation: local-ohne-Hash, federated-mit-Hash, unsupported auth_method
 - Email-Lowercase-Normalisierung im Repository
 - Duplicate-Email case-insensitive (durch lowercase-stored)

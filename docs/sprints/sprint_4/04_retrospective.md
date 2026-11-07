@@ -39,8 +39,10 @@ funktionierender Live-Demo Rueckenwind gab.
 1. **Doku-Struktur beim Planning fixieren, nicht am Abgabetag.** Format,
    Gliederung und Grafik-Konzept des Schlussberichts gehoeren als AC in die
    DOC-Story, bevor der Sprint startet.
+
 2. **Screenshots und Nachweise laufend sammeln.** Pro Demo direkt 1-2
    Screenshots ablegen, statt sie am Ende zu rekonstruieren.
+
 3. **Zaehlregeln fuer Velocity ab Tag 1 definieren** (Lehre aus der
    Sprint-1-Diskrepanz zwischen Review- und Journal-Zaehlung, siehe
    Schlussbericht 6.1).

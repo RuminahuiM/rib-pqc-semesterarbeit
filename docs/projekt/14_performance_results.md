@@ -61,6 +61,7 @@ ML-KEM-1024 wurde **uebersprungen** weil der Server in `config.yaml` nur `ML-KEM
 **Bewertung:** **PASS mit 20x Margin (Crypto-Only)** und **12x Margin (Full)**. NFR-Perf-2 verlangt ML-DSA-65-Verify unter 10 ms - beide Varianten deutlich darunter.
 
 **Interpretation:**
+
 - Crypto-Only-Overhead pro Call: ~0.18 ms Median. Das ist reines ML-DSA-65-verify auf einem 1952 Byte Public-Key gegen ein ~4 KB signing_input.
 - TokenService-Full-Overhead: 0.537 ms P50, davon ~0.36 ms fuer JWS-Compact-Parsing, base64url-Decode, Header-JSON, alg-Allowlist-Check, iat/exp-Validation.
 - Grosse P99/max-Streuung bei Crypto-Only (max 9.985 ms) trotz niedrigem P50 - typisch fuer ML-DSA-Verify: konstante Zeit sollte gelten, GC-Pausen aber schlagen einzelne Samples auf. Kein Timing-Side-Channel-Risiko dokumentiert.
@@ -89,6 +90,7 @@ ML-KEM-1024 wurde **uebersprungen** weil der Server in `config.yaml` nur `ML-KEM
 **Bewertung:** **PASS mit 64x Margin (10 KiB)**. NFR-Perf-3 Target 50 ms weit unterschritten.
 
 **Interpretation:**
+
 - AEAD-Overhead skaliert praktisch nicht mit Payload-Groesse zwischen 256 B und 10 KiB (P50 alle ~0.22 ms). Das entspricht dem AES-NI-Hardware-Support in cryptography-lib.
 - Der P50-Wert enthaelt sowohl encrypt als auch decrypt in einer Iteration.
 - ASGI-Overhead fuer einen Plaintext-GET /health liegt bei 0.749 ms P50 (mehr als der AEAD-Overhead selbst). Das illustriert dass in prod die Encryption ein sehr kleiner Teil der Response-Zeit ist.

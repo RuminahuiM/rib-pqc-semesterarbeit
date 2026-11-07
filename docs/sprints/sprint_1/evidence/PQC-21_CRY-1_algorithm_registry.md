@@ -105,17 +105,21 @@ pqc-redis          redis:7-alpine             ...                Up (healthy)
   `@runtime_checkable`. Plugin-Adapter (in PQC-25 LibOqsKem etc.) muessen
   lediglich die richtigen Methoden haben, kein Inheritance-Zwang. Modernes
   2026-Pattern, gute Decoupling-Story fuer den Bericht.
+
 - **Placeholder-Plugins in Sprint 1**: `PlaceholderKem` und
   `PlaceholderSignature` werfen `NotImplementedError`. Das isoliert R-T01
   (liboqs-Build) komplett auf PQC-25. CRY-1 kann ohne liboqs-Container
   getestet werden und ist vollstaendig sandbox-tauglich.
+
 - **NIST-Standard-Namen als einzige akzeptierte Algorithmus-Identifier**:
   `_SUPPORTED_KEM_ALGORITHMS` und `_SUPPORTED_SIGNATURE_ALGORITHMS` sind
   frozensets. Pre-Standard-Namen wie "Kyber768" oder "Dilithium3" werfen
   `UnsupportedAlgorithmError` (Test-Coverage vorhanden).
+
 - **Crypto-Registry liegt in `app.state.crypto_registry`**: Nachfolgende
   Stories (CRY-2 Facade, AUT/TOK) ziehen den Singleton aus `app.state`,
   nicht aus dem globalen Modul. Saubere Lifecycle-Bindung.
+
 - **Frischer Hatch-only-include-Eintrag**: `crypto` muss in pyproject.toml
   enthalten sein, sonst baut der editable-Wheel-Schritt im Dockerfile
   inkonsistent. Bereits angepasst.
@@ -143,6 +147,7 @@ Story-Planung. Sie wurden vor User-Test entdeckt durch die Lehre aus PQC-19
 
 - **Keine echten Crypto-Operationen in CRY-1**: Per Design. Placeholder
   werfen `NotImplementedError`. PQC-25 (CRY-5) bringt die liboqs-Anbindung.
+
 - **Keine Threadsafety**: Registry wird einmal beim Service-Start befuellt
   und danach read-only verwendet. Hot-Reload kein Use-Case in diesem Sprint.
 

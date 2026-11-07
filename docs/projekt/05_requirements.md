@@ -105,6 +105,7 @@ Prioritäten-Schema: **Must** (für die Kernfunktion zwingend), **Should** (wich
 **Priorität:** Must
 
 **Akteure**
+
 - Primär: End-User der Mock-App
 - Sekundär: Auth-Service (Local-Auth-Komponente)
 
@@ -112,11 +113,13 @@ Prioritäten-Schema: **Must** (für die Kernfunktion zwingend), **Should** (wich
 Ein registrierter User authentifiziert sich gegenüber dem Auth-Service mit Email und Passwort und erhält im Erfolgsfall einen ML-DSA-signierten Broker-Token.
 
 **Vorbedingungen**
+
 - User-Record existiert im lokalen User-Store
 - Auth-Service ist erreichbar
 - Mock-App hat eine aktive Internet-Verbindung
 
 **Hauptablauf**
+
 1. User öffnet die Mock-App und sieht den Login-Screen mit den Optionen [Email/Passwort, Google, Microsoft]
 2. User wählt "Login mit Email/Passwort"
 3. User gibt Email und Passwort ein und tippt auf "Anmelden"
@@ -131,16 +134,19 @@ Ein registrierter User authentifiziert sich gegenüber dem Auth-Service mit Emai
 Keine.
 
 **Fehler-Szenarien**
+
 - E-1: Falsche Credentials. Auth-Service antwortet `401 Unauthorized` mit Body `{ error: "invalid_credentials" }`. App zeigt eine generische Fehlermeldung.
 - E-2: User-Record nicht gefunden. Auth-Service antwortet `401` mit identischem Body wie E-1, um User-Enumeration zu verhindern.
 - E-3: Netzwerk-Fehler. App zeigt "Server nicht erreichbar".
 - E-4: Auth-Service hat keinen aktiven Signier-Schlüssel. `500 Internal Server Error`. App zeigt allgemeine Fehlermeldung.
 
 **Nachbedingungen**
+
 - Erfolg: App besitzt einen gültigen Broker-Token, User ist als `auth_method=local` markiert
 - Misserfolg: kein Token vorhanden, klare Fehlermeldung in der UI
 
 **Acceptance Criteria**
+
 - Erfolgreicher Login liefert einen Token, der mit dem Public-Key des Auth-Service ML-DSA-verifizierbar ist
 - Token-Payload enthält die Claims `sub`, `iss`, `iat`, `exp`, `auth_method: "local"`
 - Falsche Credentials und nicht-existierender User liefern identische `401`-Responses (kein User-Enumeration)
@@ -153,6 +159,7 @@ Keine.
 **Priorität:** Must
 
 **Akteure**
+
 - Primär: End-User der Mock-App
 - Sekundär: Google OIDC OP, Auth-Service (Broker-Komponente)
 
@@ -160,11 +167,13 @@ Keine.
 Ein User authentifiziert sich bei Google via OIDC Authorization Code Flow mit PKCE. Der Auth-Service verifiziert das Google-ID-Token und stellt einen eigenen ML-DSA-signierten Broker-Token aus.
 
 **Vorbedingungen**
+
 - Auth-Service ist bei Google als OIDC-Client registriert (client_id, redirect_uri konfiguriert)
 - User hat ein Google-Konto
 - Mock-App hat eine aktive Internet-Verbindung
 
 **Hauptablauf**
+
 1. User wählt "Login mit Google" im Login-Screen
 2. App generiert PKCE `code_verifier` und `code_challenge`, sowie einen `state`-Parameter
 3. App öffnet einen Browser-Tab mit Google's `/authorize`-URL inklusive `code_challenge` und `state`
@@ -179,19 +188,23 @@ Ein User authentifiziert sich bei Google via OIDC Authorization Code Flow mit PK
 12. App speichert den Token, navigiert zum Home-Screen
 
 **Alternativ-Abläufe**
+
 - Alt-4a: User bricht den Google-Login ab. Google leitet zurück mit einem Error-Parameter. App zeigt "Login abgebrochen" und kehrt zum Login-Screen zurück.
 
 **Fehler-Szenarien**
+
 - E-1: State-Mismatch (möglicher CSRF-Angriff). App lehnt den Callback ab und zeigt einen Sicherheitsfehler.
 - E-2: Google liefert einen Error-Code im Callback. Auth-Service antwortet `400 Bad Request`. App zeigt die entsprechende Meldung.
 - E-3: Auth-Service kann das Google-Token nicht verifizieren (Signatur stimmt nicht, Token abgelaufen). `401 Unauthorized`. App zeigt "Federation fehlgeschlagen".
 - E-4: Google-JWKS-Endpoint nicht erreichbar. `503 Service Unavailable`. App zeigt "Vorübergehender Fehler".
 
 **Nachbedingungen**
+
 - Erfolg: App besitzt einen Broker-Token, lokaler User-Record ist mit dem Google-`sub` verknüpft
 - Misserfolg: kein Token, User-Record bleibt unverändert
 
 **Acceptance Criteria**
+
 - Erster Login eines Google-Users legt einen User-Record an, mit Claim `auth_method: "google"`
 - Wiederholter Login derselben Google-Identität führt zu demselben internen `user_id`
 - PKCE wird durchgängig eingesetzt (kein `client_secret` in der mobilen App)
@@ -205,6 +218,7 @@ Ein User authentifiziert sich bei Google via OIDC Authorization Code Flow mit PK
 **Priorität:** Should
 
 **Akteure**
+
 - Primär: End-User der Mock-App
 - Sekundär: Microsoft Entra OIDC OP, Auth-Service (Broker-Komponente)
 
@@ -212,12 +226,14 @@ Ein User authentifiziert sich bei Google via OIDC Authorization Code Flow mit PK
 Analog UC-2, aber mit Microsoft Entra (Azure AD) als externem IdP.
 
 **Vorbedingungen**
+
 - Auth-Service ist bei Microsoft als OIDC-Client registriert
 - User hat ein Microsoft-Konto (persönliches Microsoft-Konto oder Microsoft-365-Account)
 - Mock-App hat eine aktive Internet-Verbindung
 
 **Hauptablauf**
 Strukturell identisch mit UC-2, mit folgenden Unterschieden:
+
 - Endpunkte: Microsoft `/authorize`, `/token` und `/jwks` (aus Discovery-Dokument `https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration` ermittelt)
 - Claim-Mapping: Microsoft-`oid` (Object ID) statt `sub` als external identifier (Microsoft-Spezifikum)
 - Tenant: `common` (akzeptiert sowohl Privat- als auch Geschäftskonten)
@@ -228,12 +244,15 @@ Wie UC-2.
 
 **Fehler-Szenarien**
 Wie UC-2, plus:
+
 - E-5: Microsoft Token enthält keinen `oid`-Claim (unerwartete Token-Struktur). `400 Bad Request`, klare Log-Meldung.
 
 **Nachbedingungen**
+
 - Erfolg: App besitzt einen Broker-Token, User-Record ist mit der Microsoft-`oid` verknüpft
 
 **Acceptance Criteria**
+
 - Wie UC-2, plus:
 - Tenant-Handling: Auth-Service akzeptiert das `common`-Tenant-Endpoint
 - Claim `auth_method: "microsoft"` wird korrekt gesetzt
@@ -246,6 +265,7 @@ Wie UC-2, plus:
 **Priorität:** Must
 
 **Akteure**
+
 - Primär: Mock-App (authentifizierter User)
 - Sekundär: Auth-Service (Session-Manager-Komponente)
 
@@ -253,10 +273,12 @@ Wie UC-2, plus:
 Nach erfolgreichem Login etabliert die App eine post-quantum-sichere Session mit dem Backend via ML-KEM-768-Handshake. Aus dem geteilten Geheimnis wird ein AES-256-GCM-Session-Key abgeleitet.
 
 **Vorbedingungen**
+
 - App besitzt einen gültigen Broker-Token (aus UC-1, UC-2 oder UC-3)
 - Auth-Service hat den Algorithmus "ML-KEM-768" in seiner Algorithmus-Registry
 
 **Hauptablauf**
+
 1. App generiert ein ML-KEM-768-Keypair (`pk_app`, `sk_app`)
 2. App sendet `POST /session/init` mit Header `Authorization: Bearer <broker_token>` und Body `{ kem_alg: "ML-KEM-768", encapsulation_key: <pk_app base64> }`
 3. Auth-Service verifiziert den Broker-Token (ML-DSA-Signatur, Ablaufzeit)
@@ -271,19 +293,23 @@ Nach erfolgreichem Login etabliert die App eine post-quantum-sichere Session mit
 12. App hält `session_id` und `session_key` ausschliesslich im Arbeitsspeicher (nicht persistiert)
 
 **Alternativ-Abläufe**
+
 - Alt-4a: Algorithmus-Negotiation. Falls der Auth-Service den angefragten `kem_alg` nicht unterstützt, antwortet er mit `406 Not Acceptable` und Body `{ supported_algorithms: ["ML-KEM-768", ...] }`. App wählt einen unterstützten Algorithmus und sendet erneut.
 
 **Fehler-Szenarien**
+
 - E-1: Broker-Token ungültig (abgelaufen, falsche Signatur). `401 Unauthorized`. App leitet zu Re-Authentication weiter (siehe UC-6).
 - E-2: KEM-Algorithmus nicht unterstützt. `406 Not Acceptable` mit Liste unterstützter Algorithmen.
 - E-3: `Encaps`-Operation schlägt unerwartet fehl. `500 Internal Server Error`. Server-seitig geloggt.
 - E-4: Session-Store nicht erreichbar (z.B. Redis down). `503 Service Unavailable`.
 
 **Nachbedingungen**
+
 - Erfolg: App und Auth-Service teilen denselben `session_key`. Session-Record existiert mit TTL.
 - Misserfolg: kein Session-Record vorhanden, klare Fehlermeldung in der UI.
 
 **Acceptance Criteria**
+
 - App-Layer-PQ-Session wird in unter 500ms etabliert (Bedingung: lokales Netzwerk, gemessen am Server)
 - `session_key` ist auf App- und Server-Seite bit-identisch (testbar via dedicated Echo-Endpoint mit XOR-Vergleich)
 - Session läuft nach konfiguriertem TTL ab (Default: 15 Minuten). Nachfolgende Requests mit derselben `session_id` werden mit `401` abgewiesen.
@@ -296,6 +322,7 @@ Nach erfolgreichem Login etabliert die App eine post-quantum-sichere Session mit
 **Priorität:** Must
 
 **Akteure**
+
 - Primär: Mock-App (mit etablierter Session)
 - Sekundär: Auth-Service (Resource-Server-Komponente)
 
@@ -303,10 +330,12 @@ Nach erfolgreichem Login etabliert die App eine post-quantum-sichere Session mit
 Die App ruft einen geschützten API-Endpoint auf. Der Payload wird mit AES-256-GCM verschlüsselt unter Verwendung des `session_key` aus UC-4.
 
 **Vorbedingungen**
+
 - App und Auth-Service haben eine etablierte PQ-Session (UC-4 erfolgreich)
 - Session ist nicht abgelaufen
 
 **Hauptablauf**
+
 1. App will einen API-Call zu `/api/profile` machen
 2. App generiert eine frische 96-bit Nonce (per CSPRNG)
 3. App verschlüsselt das Request-Payload (z.B. `{}` für GET-Analog) mit AES-256-GCM unter Verwendung von `session_key` und Nonce
@@ -321,15 +350,18 @@ Die App ruft einen geschützten API-Endpoint auf. Der Payload wird mit AES-256-G
 Keine.
 
 **Fehler-Szenarien**
+
 - E-1: `session_id` unbekannt oder abgelaufen. `401 Unauthorized` (Antwort im Klartext, da Session-Key nicht ableitbar). App leitet zu UC-4 weiter.
 - E-2: Authentication Tag passt nicht (möglicher Tampering-Versuch). `400 Bad Request`. Vorfall wird serverseitig in einem Security-Log festgehalten.
 - E-3: Decrypted Payload ist kein valides JSON. `400 Bad Request`, klare Log-Meldung.
 
 **Nachbedingungen**
+
 - Erfolg: App erhält die entschlüsselte Response, hat die angefragten Daten
 - Misserfolg: keine Daten erhalten, klare Fehlermeldung oder Re-Auth-Trigger
 
 **Acceptance Criteria**
+
 - Verschlüsselte Payloads sind im Wireshark-Capture nicht als Klartext erkennbar (manuelle Verifikation während der Demo)
 - Jeder Request und jede Response verwendet eine unique Nonce (testbar durch Replay-Versuch)
 - Falsche Tag-Verifikation führt zu sofortigem Abbruch ohne weitere Payload-Verarbeitung
@@ -342,6 +374,7 @@ Keine.
 **Priorität:** Should
 
 **Akteure**
+
 - Primär: End-User (oder App-Logik im Hintergrund)
 - Sekundär: Auth-Service
 
@@ -349,9 +382,11 @@ Keine.
 Wenn der Broker-Token oder die PQ-Session abläuft, wird der User in einen sauberen Re-Authentication-Flow geleitet.
 
 **Vorbedingungen**
+
 - App hat einen abgelaufenen Token oder eine abgelaufene Session
 
 **Hauptablauf**
+
 1. App versucht einen API-Call (UC-5)
 2. Auth-Service antwortet `401 Unauthorized` mit Body `{ error: "session_expired" }` oder `{ error: "token_expired" }`
 3. App erkennt die `401`-Response und löscht den lokalen Token sowie Session-Key
@@ -361,16 +396,20 @@ Wenn der Broker-Token oder die PQ-Session abläuft, wird der User in einen saube
 7. App wiederholt den ursprünglichen API-Call mit den neuen Credentials
 
 **Alternativ-Abläufe**
+
 - Alt-1a: Soft-Expiry. App prüft den `exp`-Claim des Tokens lokal und initiiert Re-Auth proaktiv, bevor ein `401` zurückkommt.
 
 **Fehler-Szenarien**
+
 - E-1: User bricht Re-Login ab. App zeigt einen "Login erforderlich"-Bildschirm und blockiert Zugriff auf den Home-Screen.
 
 **Nachbedingungen**
+
 - Erfolg: frische Auth und Session etabliert, ursprünglicher API-Call erfolgreich abgeschlossen
 - Misserfolg: User bleibt im Login-Zustand
 
 **Acceptance Criteria**
+
 - App speichert keine abgelaufenen Tokens oder Session-Keys (testbar durch Inspizieren des Secure Storage nach `401`)
 - Jede `401`-Response triggert einen Re-Auth-Flow, niemals stillschweigendes Wegwerfen
 - User-Experience bleibt verständlich (klare Meldung warum erneut eingeloggt werden muss)
@@ -382,6 +421,7 @@ Wenn der Broker-Token oder die PQ-Session abläuft, wird der User in einen saube
 **Priorität:** Must
 
 **Akteure**
+
 - Primär: Operator (Dodoe im Demo-Modus)
 - Sekundär: Auth-Service
 
@@ -389,10 +429,12 @@ Wenn der Broker-Token oder die PQ-Session abläuft, wird der User in einen saube
 Der eingesetzte KEM-Algorithmus wird per Konfigurations-Änderung von ML-KEM-768 auf einen anderen Algorithmus umgeschaltet. Der Application-Code im Auth-Service wird dabei nicht verändert. Diese Demonstration ist der zentrale Beweis für die Crypto-Agility-Eigenschaft der Architektur.
 
 **Vorbedingungen**
+
 - Auth-Service hat mindestens zwei KEM-Algorithmen in der Registry registriert (z.B. ML-KEM-768 und ML-KEM-1024)
 - Auth-Service läuft mit aktueller Config `crypto.kem.default = "ML-KEM-768"`
 
 **Hauptablauf**
+
 1. Operator ändert in `config.yaml` den Wert `crypto.kem.default` von `"ML-KEM-768"` auf `"ML-KEM-1024"`
 2. Operator startet den Auth-Service neu (oder triggert Config-Reload, falls implementiert)
 3. Auth-Service lädt die Config und prüft `crypto.kem.default` gegen die Algorithmus-Registry
@@ -402,16 +444,20 @@ Der eingesetzte KEM-Algorithmus wird per Konfigurations-Änderung von ML-KEM-768
 7. Session-Etablierung gelingt mit dem neuen Algorithmus
 
 **Alternativ-Abläufe**
+
 - Alt-2a: Hot-Reload. Falls der Auth-Service Config-Hot-Reload unterstützt, kein Restart nötig.
 
 **Fehler-Szenarien**
+
 - E-1: Konfigurierter Algorithmus nicht in der Registry. Auth-Service verweigert den Start und loggt eine klare Fehlermeldung ("Configured algorithm 'X' not found in registry").
 
 **Nachbedingungen**
+
 - Erfolg: nach dem Restart läuft der Auth-Service mit dem neuen Default-Algorithmus, neue Sessions verwenden den neuen Algorithmus, der Application-Code im Auth-Service ist unverändert
 - Misserfolg: Service startet nicht, Config muss korrigiert werden
 
 **Acceptance Criteria**
+
 - Demonstration kann live im Bewertungs-Termin gezeigt werden
 - Diff zwischen alter und neuer Konfiguration umfasst nur Config-Dateien (z.B. `config.yaml`), keine `.py`-Dateien
 - Die App muss kein Update bekommen, sondern erkennt die Algorithmus-Änderung allein über die Negotiation-Response
@@ -424,6 +470,7 @@ Der eingesetzte KEM-Algorithmus wird per Konfigurations-Änderung von ML-KEM-768
 **Priorität:** Could (Stretch-Goal)
 
 **Akteure**
+
 - Primär: Operator
 - Sekundär: Auth-Service
 
@@ -431,10 +478,12 @@ Der eingesetzte KEM-Algorithmus wird per Konfigurations-Änderung von ML-KEM-768
 Ein neuer externer OIDC-Provider (z.B. Apple Sign In) wird zur IdP-Registry hinzugefügt, ohne Änderungen an der bestehenden Architektur oder am bestehenden Provider-Code.
 
 **Vorbedingungen**
+
 - Apple-Sign-In-OIDC-Client ist bei Apple registriert (client_id, redirect_uri)
 - Apple's OIDC-Discovery-Endpoint ist erreichbar
 
 **Hauptablauf**
+
 1. Operator legt eine neue Konfig-Sektion `idp_providers.apple` an mit `{ client_id, redirect_uri, discovery_url, scopes, claim_mapping }`
 2. Operator registriert in der IdP-Registry einen neuen Eintrag `"apple" → AppleProvider` (Provider-Klasse implementiert ein gemeinsames Interface)
 3. Auth-Service wird neu gestartet
@@ -445,14 +494,17 @@ Ein neuer externer OIDC-Provider (z.B. Apple Sign In) wird zur IdP-Registry hinz
 Keine.
 
 **Fehler-Szenarien**
+
 - E-1: Apple-Discovery-Endpoint beim Start nicht erreichbar. Auth-Service loggt eine Warnung, die anderen IdPs funktionieren trotzdem (defensive Initialisierung pro Provider).
 - E-2: Claim-Mapping fehlerhaft. Apple-Login liefert ein Token mit unerwarteter Claim-Struktur. Auth-Service antwortet mit `400`, klare Log-Meldung mit dem fehlenden Claim-Pfad.
 
 **Nachbedingungen**
+
 - Erfolg: Apple-Login funktioniert end-to-end. Bestehende Provider (Google, Microsoft) sind unverändert funktionsfähig.
 - Misserfolg: Apple-Login schlägt fehl, andere Provider unverändert.
 
 **Acceptance Criteria**
+
 - Diff zwischen alter und neuer Architektur umfasst nur den neuen Plugin-Eintrag und die Konfig, keine Code-Änderungen an Google- oder Microsoft-Provider
 - Apple-User können sich einloggen und die Mock-App in vollem Umfang nutzen
 - Demonstrierbar im Bewertungs-Termin (sofern Apple als Stretch-Goal implementiert wird)
@@ -484,19 +536,23 @@ Gruppen:
 Das System authentifiziert User anhand von Email und Passwort gegen einen lokalen User-Store mit Argon2id-gehashten Passwörtern.
 
 **Vorbedingungen**
+
 - User-Record existiert im User-Store mit gespeichertem Argon2id-Hash
 - Auth-Service läuft und ist erreichbar
 
 **Nachbedingungen**
+
 - Erfolg: User-Identität ist verifiziert, interne `user_id` ist verfügbar für nachfolgende Token-Ausstellung
 - Misserfolg: System antwortet mit `401`, keine Identitäts-Information wird ausgegeben
 
 **Fehler-Szenarien**
+
 - Falsche Credentials: Response `401` mit generischer Fehlermeldung
 - User nicht gefunden: Response `401` mit identischer Antwort (kein User-Enumeration)
 - User-Store-Fehler: Response `500`
 
 **Acceptance Criteria**
+
 - Passwort-Vergleich erfolgt mit konstanter Zeit (Argon2id verify, timing-attack-resistant)
 - Argon2id-Parameter: m=64MB, t=3, p=4
 - Bei falscher Eingabe enthält die Response keine Hinweise auf User-Existenz oder fehlerhaftes Feld
@@ -513,17 +569,21 @@ Das System authentifiziert User anhand von Email und Passwort gegen einen lokale
 Das System bietet eine Admin-CLI zur Anlage von Test-Usern. Im Schulprojekt-Kontext gibt es keinen Self-Service-Signup; User werden vor dem Demo-Termin geseeded.
 
 **Vorbedingungen**
+
 - Operator hat CLI-Zugriff auf den Server
 - Keine bestehende User-Record-Konflikte
 
 **Nachbedingungen**
+
 - Neuer User-Record existiert im User-Store mit Argon2id-gehashtem Passwort
 
 **Fehler-Szenarien**
+
 - Email bereits vorhanden: CLI gibt Fehler zurück, kein Überschreiben
 - Schwaches Passwort: CLI warnt, akzeptiert es aber (kein Production-Validator)
 
 **Acceptance Criteria**
+
 - Mindestens 2-3 Test-User können vor dem Demo geseeded werden
 - Passwörter werden ausschliesslich Argon2id-gehasht gespeichert, niemals im Klartext
 - CLI ist via `docker compose exec` oder lokales Python-Skript aufrufbar
@@ -542,18 +602,22 @@ Das System bietet eine Admin-CLI zur Anlage von Test-Usern. Im Schulprojekt-Kont
 Das System verwaltet externe OIDC-Provider in einer Registry als austauschbare Plugins. Jeder Provider implementiert ein gemeinsames Provider-Interface mit Methoden wie `discover()`, `verify_token()` und `map_claims()`.
 
 **Vorbedingungen**
+
 - Provider-Konfiguration ist verfügbar (Config-File)
 - Provider-Klasse ist im Code registriert
 
 **Nachbedingungen**
+
 - Registry ist initialisiert mit allen konfigurierten Providern
 - Provider sind zur Laufzeit per Name abrufbar
 
 **Fehler-Szenarien**
+
 - Provider fehlerhaft konfiguriert (z.B. fehlende client_id): Service-Start verweigert mit klarer Meldung
 - Provider-Discovery-Endpoint beim Start nicht erreichbar: Provider als "degraded" markiert, andere Provider funktionieren weiter
 
 **Acceptance Criteria**
+
 - Mindestens 2 Provider in der Registry initialisierbar (Google und Microsoft)
 - Neuer Provider hinzufügen erfordert nur einen neuen Plugin-Eintrag plus Konfig, keine Änderungen am bestehenden Provider-Code
 - Provider-Lookup-Latenz vernachlässigbar (Dictionary-Lookup, unter 1ms)
@@ -570,18 +634,22 @@ Das System verwaltet externe OIDC-Provider in einer Registry als austauschbare P
 Das System implementiert den OIDC Authorization Code Flow mit PKCE (Proof Key for Code Exchange, RFC 7636) als OIDC-Client gegenüber externen IdPs.
 
 **Vorbedingungen**
+
 - IdP ist in der Registry vorhanden und konfiguriert
 - App hat ein gültiges `state` und PKCE-`code_verifier`/`code_challenge` generiert
 
 **Nachbedingungen**
+
 - System hat einen vom IdP ausgestellten Access- und ID-Token erhalten
 
 **Fehler-Szenarien**
+
 - `state`-Mismatch im Callback (möglicher CSRF): Abbruch mit klarer Fehlermeldung
 - Code-Exchange beim IdP fehlgeschlagen: Response `400` mit Provider-Fehler im Log
 - Discovery-Endpoint nicht erreichbar: Response `503`
 
 **Acceptance Criteria**
+
 - PKCE wird durchgängig verwendet mit `code_challenge_method=S256`
 - `state`-Parameter hat mindestens 128 Bit Entropie und ist pro Login-Versuch eindeutig
 - `client_secret` wird ausschliesslich im Backend gehalten, nie an die mobile App ausgeliefert
@@ -598,19 +666,23 @@ Das System implementiert den OIDC Authorization Code Flow mit PKCE (Proof Key fo
 Das System verifiziert eingehende ID-Tokens externer IdPs gegen deren JWKS-Endpoint. Geprüft werden: Signatur, Issuer, Audience, Ablaufzeit und Not-Before-Time.
 
 **Vorbedingungen**
+
 - ID-Token ist vorhanden (aus FR-Broker-2)
 - JWKS ist gecached oder Live-Fetch ist möglich
 
 **Nachbedingungen**
+
 - Erfolg: Token-Claims sind verifiziert und auslesbar
 - Misserfolg: Verifikation schlägt fehl, Request wird abgewiesen
 
 **Fehler-Szenarien**
+
 - Signatur ungültig: `401`
 - Token abgelaufen, falscher Issuer oder falsche Audience: `401`
 - JWKS-Endpoint nicht erreichbar UND Cache leer: `503`
 
 **Acceptance Criteria**
+
 - JWKS wird gecached mit angemessenem TTL (z.B. 1h), kein Refetch bei jedem Login
 - Bei JWKS-Endpoint-Fehler greift Cache (graceful degradation), Service bleibt funktionsfähig
 - Signatur-Verifikation klappt für RS256 und ES256 (die von Google/Microsoft genutzten Algorithmen)
@@ -627,19 +699,23 @@ Das System verifiziert eingehende ID-Tokens externer IdPs gegen deren JWKS-Endpo
 Das System mapped externe Identitäts-Claims (z.B. Google-`sub`, Microsoft-`oid`) auf eine einheitliche interne `user_id`. Beim ersten Login eines externen Users wird ein neuer User-Record angelegt.
 
 **Vorbedingungen**
+
 - Externes Token ist verifiziert (FR-Broker-3)
 - Claim-Mapping für den Provider ist konfiguriert
 
 **Nachbedingungen**
+
 - Interne `user_id` ist verfügbar
 - Bei erstem Login: neuer User-Record im User-Store angelegt
 - Bei wiederholtem Login: bestehender User-Record gefunden
 
 **Fehler-Szenarien**
+
 - Erwarteter Claim fehlt im Token (z.B. kein `oid` von Microsoft): `400` mit klarer Log-Meldung
 - User-Store nicht erreichbar: `503`
 
 **Acceptance Criteria**
+
 - Wiederholter Login derselben externen Identität führt immer zum selben internen `user_id`
 - Claim-Mapping ist pro Provider konfigurierbar (Provider-spezifische Eigenheiten wie Microsoft-`oid` vs Google-`sub`)
 - Erster Login legt User-Record mit Claim `auth_method` automatisch an
@@ -658,16 +734,20 @@ Das System mapped externe Identitäts-Claims (z.B. Google-`sub`, Microsoft-`oid`
 Nach erfolgreicher Authentifizierung (lokal oder federated) stellt das System einen eigenen Broker-Token aus, signiert mit ML-DSA-65 gemäss FIPS 204.
 
 **Vorbedingungen**
+
 - User-Identität ist verifiziert (durch FR-Auth-1 oder FR-Broker-4)
 - Aktiver Signier-Schlüssel ist verfügbar
 
 **Nachbedingungen**
+
 - Signierter Broker-Token ist verfügbar und an die App ausgeliefert
 
 **Fehler-Szenarien**
+
 - Signier-Schlüssel nicht verfügbar: `500`, Service-Logging
 
 **Acceptance Criteria**
+
 - Token enthält die Pflicht-Claims: `sub`, `iss`, `iat`, `exp`, `auth_method`
 - Token-Header enthält `alg` (z.B. "ML-DSA-65") und `kid` (Key ID für Rotation)
 - Signatur ist mit dem entsprechenden Public-Key verifizierbar (FR-Token-2)
@@ -685,20 +765,24 @@ Nach erfolgreicher Authentifizierung (lokal oder federated) stellt das System ei
 Das System verifiziert eingehende Broker-Tokens stateless. Geprüft werden Signatur (via `kid`-spezifizierten Public-Key), Issuer und Ablaufzeit.
 
 **Vorbedingungen**
+
 - Token ist vorhanden im Request-Header
 - Public-Key für `kid` ist im System bekannt
 
 **Nachbedingungen**
+
 - Erfolg: Token-Claims sind extrahiert und verifiziert
 - Misserfolg: Request wird mit `401` abgewiesen
 
 **Fehler-Szenarien**
+
 - Signatur ungültig: `401`
 - Token abgelaufen: `401` mit `error="token_expired"`
 - Unbekannte `kid`: `401` mit klarer Log-Meldung
 - Falscher Issuer: `401`
 
 **Acceptance Criteria**
+
 - Verifikation funktioniert ohne Datenbank-Lookup (stateless)
 - Verifikations-Latenz unter 10ms (typisch für ML-DSA-65 verify)
 - Fehlerhafte Tokens werden nicht im Klartext geloggt (nur Token-ID/Hash)
@@ -715,16 +799,20 @@ Das System verifiziert eingehende Broker-Tokens stateless. Geprüft werden Signa
 Das System unterstützt die Rotation des ML-DSA-Signier-Schlüssels. Alte Public-Keys bleiben für die TTL bereits ausgestellter Tokens verifizierbar.
 
 **Vorbedingungen**
+
 - Neuer ML-DSA-Schlüssel ist generiert
 
 **Nachbedingungen**
+
 - Neue Tokens werden mit dem neuen Schlüssel signiert
 - Alte Tokens bleiben bis zu ihrem Ablauf verifizierbar
 
 **Fehler-Szenarien**
+
 - Rotation während aktiver Last: Tokens, die zwischen Generierung und Aktivierung ausgestellt wurden, dürfen nicht ungültig werden
 
 **Acceptance Criteria**
+
 - `kid` (Key ID) ist in jedem Token-Header
 - Mehrere Public-Keys können parallel zur Verifikation verfügbar sein
 - Rotation ist via CLI durchführbar (kein API-Endpoint nötig im Schul-Scope)
@@ -744,20 +832,24 @@ Das System unterstützt die Rotation des ML-DSA-Signier-Schlüssels. Alte Public
 Das System etabliert nach erfolgreicher Broker-Token-Verifikation eine PQ-Session via ML-KEM Encaps/Decaps gemäss FIPS 203. Default-Variante: ML-KEM-768.
 
 **Vorbedingungen**
+
 - Broker-Token ist valide (FR-Token-2)
 - Angefragter KEM-Algorithmus ist in der Crypto-Abstraction-Layer-Registry (FR-Crypto-1)
 - App hat ihr KEM-Keypair generiert und den Public-Key gesendet
 
 **Nachbedingungen**
+
 - Erfolg: Beide Seiten haben dasselbe `shared_secret`
 - Misserfolg: Kein gemeinsames `shared_secret`, Session-Etablierung wird abgebrochen
 
 **Fehler-Szenarien**
+
 - KEM-Algorithmus nicht in Registry: `406` mit Liste unterstützter Algorithmen
 - `Encaps`-Operation schlägt unerwartet fehl: `500`
 - App-Public-Key hat falsche Länge oder Format: `400`
 
 **Acceptance Criteria**
+
 - Etablierung in unter 500ms auf lokalem Netzwerk (Mess-Punkt: Server-Eingang Request bis Server-Ausgang Response)
 - `shared_secret` wird niemals übertragen, nur `encapsulation_key` und `ciphertext`
 - ML-KEM-Operationen kommen aus auditierten Libraries (Server: liboqs-python, App: @noble/post-quantum)
@@ -774,16 +866,20 @@ Das System etabliert nach erfolgreicher Broker-Token-Verifikation eine PQ-Sessio
 Aus dem `shared_secret` der KEM-Operation wird via HKDF (RFC 5869) ein 256-Bit Session-Key abgeleitet. Diese Trennung von KEM-Secret und Session-Key ist Standard-Praxis und ermöglicht zukünftige Erweiterungen (z.B. Hybrid mit klassischem ECDH).
 
 **Vorbedingungen**
+
 - `shared_secret` aus KEM ist verfügbar (FR-Session-1)
 - `session_id` wurde generiert
 
 **Nachbedingungen**
+
 - 256-Bit Session-Key ist auf App- und Server-Seite bit-identisch
 
 **Fehler-Szenarien**
+
 - HKDF-Parameter mismatch zwischen Client und Server: Session-Key wäre unterschiedlich, alle nachfolgenden verschlüsselten Requests scheitern (manifestiert sich als `400` Tag-Fehler in FR-DataChannel-1)
 
 **Acceptance Criteria**
+
 - `info`-Parameter ist versioniert (z.B. `"app-session-v1"`) für Forward-Kompatibilität
 - `salt` ist die `session_id` (eindeutig pro Session)
 - HKDF-Hash-Algorithmus ist SHA-256
@@ -801,16 +897,20 @@ Aus dem `shared_secret` der KEM-Operation wird via HKDF (RFC 5869) ein 256-Bit S
 Das System speichert aktive Sessions als Tupel `{session_id, session_key, user_id, expires_at, kem_alg}` mit Time-to-Live. Sessions werden nach Ablauf automatisch entfernt.
 
 **Vorbedingungen**
+
 - Keine
 
 **Nachbedingungen**
+
 - Aktive Sessions sind über `session_id` nachschlagbar
 - Abgelaufene Sessions sind nicht mehr abrufbar
 
 **Fehler-Szenarien**
+
 - Session-Store nicht erreichbar (z.B. Redis down): `503`, Service-Logging
 
 **Acceptance Criteria**
+
 - Session-Keys werden nicht über Service-Restarts hinaus persistiert (In-Memory oder TTL-Cache)
 - Default-TTL: 15 Minuten, konfigurierbar via Config-File
 - Lookup-Latenz unter 5ms (auch bei vielen aktiven Sessions)
@@ -827,15 +927,19 @@ Das System speichert aktive Sessions als Tupel `{session_id, session_key, user_i
 Wenn der Client einen KEM-Algorithmus anfragt, der vom Server nicht unterstützt wird oder nicht der Default ist, antwortet der Server mit der Liste der aktuell unterstützten Algorithmen. Der Client kann darauf basierend einen neuen Request mit einem unterstützten Algorithmus stellen.
 
 **Vorbedingungen**
+
 - Crypto-Registry hat mindestens einen Algorithmus
 
 **Nachbedingungen**
+
 - Client kennt die unterstützten Algorithmen und kann den passenden wählen
 
 **Fehler-Szenarien**
+
 - Keine gemeinsamen Algorithmen zwischen Client und Server: Verbindung nicht etablierbar, Client muss aktualisiert werden
 
 **Acceptance Criteria**
+
 - Response-Code `406 Not Acceptable` mit Body `{ supported_algorithms: [...] }`
 - Client kann auf Basis dieser Liste einen Retry machen, ohne App-Code-Änderung
 - Implementiert den zentralen Mechanismus, der UC-7 (Algorithmus-Wechsel) ohne Code-Update auf der Client-Seite ermöglicht
@@ -854,18 +958,22 @@ Wenn der Client einen KEM-Algorithmus anfragt, der vom Server nicht unterstützt
 Alle Request- und Response-Payloads zwischen App und geschützten API-Endpoints werden mit AES-256-GCM verschlüsselt. Der Session-Key (FR-Session-2) wird als symmetrischer Schlüssel verwendet.
 
 **Vorbedingungen**
+
 - Etablierte PQ-Session mit gültigem `session_key`
 
 **Nachbedingungen**
+
 - Erfolg: Payload ist verschlüsselt übertragen und auf der Gegenseite korrekt entschlüsselbar
 - Misserfolg: Authentication Tag passt nicht, Request wird abgewiesen
 
 **Fehler-Szenarien**
+
 - Authentication Tag ungültig: `400`, Vorfall im Security-Log
 - Decrypted Payload ist kein valides JSON: `400`, klare Log-Meldung
 - Nonce-Header fehlt oder ist nicht 96 Bit: `400`
 
 **Acceptance Criteria**
+
 - Frische 96-bit Nonce pro Nachricht, generiert via CSPRNG
 - Nonces werden innerhalb einer Session nicht wiederverwendet (AES-GCM-Sicherheits-Anforderung)
 - Wireshark-Capture zeigt keine Klartext-Payloads
@@ -883,18 +991,22 @@ Alle Request- und Response-Payloads zwischen App und geschützten API-Endpoints 
 Eingehende verschlüsselte Requests tragen `session_id` und Nonce in HTTP-Headers (`X-Session-Id`, `X-Nonce`). Der Server nutzt die `session_id` um den passenden Session-Key aus dem Session-Store zu finden.
 
 **Vorbedingungen**
+
 - Etablierte Session (Session-Record im Store)
 
 **Nachbedingungen**
+
 - Server kann das Request-Payload entschlüsseln
 - Response trägt eine eigene frische Nonce in `X-Nonce`
 
 **Fehler-Szenarien**
+
 - `X-Session-Id`-Header fehlt: `400`
 - `X-Nonce`-Header fehlt oder hat falsche Länge: `400`
 - `session_id` unbekannt oder Session abgelaufen: `401`
 
 **Acceptance Criteria**
+
 - Headers sind im Klartext übertragen (nur Routing-Information, keine Geheimnisse)
 - Routing-Latenz vernachlässigbar (unter 1ms, Dictionary-Lookup)
 - Korrupte oder gefälschte `session_id` führt zu sofortigem `401`, keine Token-Verifikation versucht
@@ -913,16 +1025,20 @@ Eingehende verschlüsselte Requests tragen `session_id` und Nonce in HTTP-Header
 Das System verwaltet eine Registry von Krypto-Algorithmen (KEM und Signatur). Jeder Algorithmus wird mit einem Namen, einer Implementation und Metadaten (Schlüssel-Längen, Output-Längen) registriert.
 
 **Vorbedingungen**
+
 - Plugins für mindestens je einen KEM- und einen Signatur-Algorithmus sind registriert
 
 **Nachbedingungen**
+
 - Registry ist initialisiert und zur Laufzeit abfragbar
 
 **Fehler-Szenarien**
+
 - Doppelter Eintrag (gleicher Name): Service-Start wird verweigert mit klarer Fehlermeldung
 - Plugin lädt nicht (z.B. fehlende Library): Service-Start wird verweigert
 
 **Acceptance Criteria**
+
 - Mindestens 2 KEM-Algorithmen registriert (z.B. ML-KEM-768 und ML-KEM-1024) für Crypto-Agility-Demonstration
 - Mindestens 1 Signatur-Algorithmus registriert (ML-DSA-65), erweiterbar
 - Registry-Lookup zur Laufzeit erfolgt in unter 1ms (Dictionary-basiert)
@@ -939,17 +1055,21 @@ Das System verwaltet eine Registry von Krypto-Algorithmen (KEM und Signatur). Je
 Der Default-Algorithmus für jede Algorithmus-Kategorie (KEM, Signatur) ist via Konfigurations-File einstellbar. Application-Code referenziert niemals einen konkreten Algorithmus-Namen, sondern ruft die abstrakte Crypto-Layer-Schnittstelle auf.
 
 **Vorbedingungen**
+
 - Konfigurations-File ist vorhanden und parsbar
 - Konfigurierter Algorithmus ist in der Registry (FR-Crypto-1)
 
 **Nachbedingungen**
+
 - System nutzt den konfigurierten Algorithmus für alle Crypto-Operationen
 
 **Fehler-Szenarien**
+
 - Konfigurierter Algorithmus nicht in Registry: Service-Start verweigert mit klarer Fehlermeldung ("Configured algorithm 'X' not found in registry")
 - Konfigurations-File fehlt oder ist nicht parsbar: Service-Start verweigert
 
 **Acceptance Criteria**
+
 - Config-Change ohne Code-Change führt zu Algorithmus-Wechsel (Beweis für UC-7)
 - Diff zwischen alter und neuer Konfiguration umfasst ausschliesslich Config-Files
 - Application-Code-Suche nach konkreten Algorithmus-Namen (z.B. grep nach "ML-KEM-768" in .py-Files) findet keine Treffer ausserhalb der Crypto-Layer-Implementation
@@ -966,16 +1086,20 @@ Der Default-Algorithmus für jede Algorithmus-Kategorie (KEM, Signatur) ist via 
 Jedes Krypto-Artefakt (Token, Session-Record, verschlüsselte Nachricht, Handshake-Request) trägt einen Algorithmus-Identifier. Dadurch kann der Empfänger den passenden Algorithmus zur Verifikation oder Entschlüsselung wählen.
 
 **Vorbedingungen**
+
 - Keine
 
 **Nachbedingungen**
+
 - Empfänger kann basierend auf dem Algorithmus-Identifier die korrekte Operation auswählen
 
 **Fehler-Szenarien**
+
 - Algorithmus-Identifier fehlt im Artefakt: Request wird mit `400` abgewiesen (kein implizites Fallback)
 - Identifier referenziert nicht-registrierten Algorithmus: `406` (für KEM) oder `401` (für Tokens)
 
 **Acceptance Criteria**
+
 - `alg`-Header in jedem Broker-Token (z.B. `"ML-DSA-65"`)
 - `kem_alg`-Feld in jedem Session-Init-Request
 - `kid`-Header in jedem Token (für Schlüssel-Auswahl bei Rotation)
@@ -993,15 +1117,19 @@ Jedes Krypto-Artefakt (Token, Session-Record, verschlüsselte Nachricht, Handsha
 Das System kombiniert den PQ-KEM-Shared-Secret mit einem klassischen ECDH-Shared-Secret (X25519) via HKDF zu einem hybriden Session-Key. Ein Angreifer müsste sowohl das PQ-Verfahren als auch das klassische Verfahren brechen, um den Session-Key zu kompromittieren.
 
 **Vorbedingungen**
+
 - Beide Schlüssel-Exchanges (ML-KEM und X25519) waren erfolgreich
 
 **Nachbedingungen**
+
 - Hybrid-Session-Key ist abgeleitet, verwendet beide Geheimnisse
 
 **Fehler-Szenarien**
+
 - Einer der Exchanges schlägt fehl: Gesamte Etablierung scheitert. Kein Downgrade auf ein einzelnes Verfahren zugelassen.
 
 **Acceptance Criteria**
+
 - HKDF-Eingabe: Konkatenation `ML-KEM-secret || X25519-secret`
 - Eingebauter Schutz gegen Downgrade-Angriffe (Server verlangt immer beide oder lehnt ab)
 - Bericht enthält Erklärung des Defense-in-Depth-Prinzips
@@ -1038,6 +1166,7 @@ Der Auth-Service wird hinter nginx mit oqs-provider deployed, sodass TLS-Handsha
 Defense-in-Depth-Prinzip: zusätzlich zur App-Layer-PQ-Verschlüsselung ist auch der Transport-Layer PQ-sicher abgesichert. Demonstriert die realistische Übergangs-Architektur, in der hybride TLS-Cipher-Suites schon ausgerollt werden, bevor reine PQ-Cipher-Suites stabil sind.
 
 **Acceptance Criteria**
+
 - `openssl s_client -groups X25519MLKEM768 -connect <host>:<port>` verbindet erfolgreich
 - TLS-Verbindung kann im Bewertungs-Termin live demonstriert werden (z.B. mit Wireshark zur Bestätigung der Cipher-Suite)
 - Im Bericht ist die Server-Konfiguration dokumentiert
@@ -1057,6 +1186,7 @@ Jede verschlüsselte Nachricht muss eindeutig identifizierbar sein (frische Nonc
 AES-GCM mit Nonce-Reuse ist katastrophal (Wiederverwendung führt zum Verlust der Vertraulichkeit). Replay-Angriffe sind ein Standard-Angriffsvektor und müssen explizit adressiert werden.
 
 **Acceptance Criteria**
+
 - Testbar durch Replay-Versuch: ein abgefangener und erneut gesendeter Request muss zumindest funktional erkennbar fehlschlagen
 - Nonces werden via CSPRNG generiert (`/dev/urandom` oder Plattform-Äquivalent)
 - Innerhalb einer Session-TTL (15 Min) ist die Wahrscheinlichkeit einer Nonce-Kollision verschwindend klein (96 Bit Entropie)
@@ -1076,6 +1206,7 @@ Sensitive Daten (Passwörter, Session-Keys, Private-Keys, externe Tokens) dürfe
 Klartext-Geheimnisse sind die häufigste Ursache für reale Sicherheitsvorfälle (Logs, Backups, Crash-Dumps, etc.).
 
 **Acceptance Criteria**
+
 - Passwörter: nur als Argon2id-Hash im User-Store, niemals im Klartext gespeichert
 - Session-Keys: nur In-Memory im Auth-Service, niemals in Logs oder auf der Wire
 - Externe ID-Tokens (Google, Microsoft): nicht persistiert nach Verifikation
@@ -1097,6 +1228,7 @@ Fehlermeldungen bei Login-Versuchen dürfen nicht enthüllen, ob ein User-Accoun
 User-Enumeration ist eine typische Vorstufe für gezielte Angriffe (Brute-Force, Phishing). Identische Responses verhindern, dass ein Angreifer Account-Existenz inferieren kann.
 
 **Acceptance Criteria**
+
 - Falsche Credentials und nicht-existierender User liefern identische Responses (gleicher Status-Code, gleicher Body)
 - Antwort-Zeit ist statistisch ähnlich (kein Timing-Channel-Angriff via Argon2id-Overhead vs Early-Exit)
 - Federated Login: bei unbekannten externen Identitäten wird trotzdem geantwortet ohne anzudeuten, dass ein User-Mapping fehlt
@@ -1116,6 +1248,7 @@ Der `state`-Parameter im OIDC Authorization Code Flow schützt vor CSRF-Angriffe
 OIDC-Standard-Anforderung. Ohne State-Verifikation kann ein Angreifer einen Login-Flow auf einer fremden Identität abschliessen.
 
 **Acceptance Criteria**
+
 - State-Parameter wird vor Authorization-Request generiert (128 Bit Entropie via CSPRNG)
 - State wird sicher gespeichert (App-State oder Session-Cookie) bis Callback eintrifft
 - Bei Callback wird State byte-exact verglichen, jeder Mismatch führt zu Abbruch
@@ -1136,6 +1269,7 @@ Wenn der Hybrid-Key-Combiner (FR-Crypto-4) implementiert ist, gilt: ein Angreife
 Defense-in-Depth ist Best Practice in Übergangsphasen, in denen neue Algorithmen noch nicht über Jahre getestet sind. Falls eine PQ-Implementation einen Fehler hat, schützt das klassische Verfahren immer noch.
 
 **Acceptance Criteria**
+
 - Schriftlich im Bericht dokumentiert (Sicherheits-Analyse-Sektion)
 - Implementiert wie in FR-Crypto-4 spezifiziert
 - Eingebauter Schutz gegen Downgrade-Angriffe (kein Fallback auf nur ein Verfahren)
@@ -1157,6 +1291,7 @@ Die Etablierung einer PQ-Session (UC-4) darf auf lokalem Netzwerk nicht länger 
 User-Experience: Login + Session-Etablierung sollte sich nicht zäh anfühlen. 500ms ist eine grosszügige Obergrenze, in der Praxis erwartet man eher 50-100ms.
 
 **Acceptance Criteria**
+
 - Gemessen via Server-Logs (Request-In bis Response-Out Timestamps)
 - Mindestens 95% der Etablierungen unter 500ms
 - Mess-Werte sind im Bericht dokumentiert
@@ -1176,6 +1311,7 @@ Die Verifikation eines Broker-Tokens (ML-DSA-65 verify) sollte unter 10ms liegen
 Diese Operation läuft potenziell bei jedem API-Call (FR-Session-1 Vorbedingung). Hohe Verifikations-Latenz würde die End-to-End-Latenz aller geschützten Calls erhöhen.
 
 **Acceptance Criteria**
+
 - Gemessen via Benchmark-Skript
 - 99-Perzentil unter 10ms
 - Mess-Werte im Bericht dokumentiert
@@ -1195,6 +1331,7 @@ Der zusätzliche Overhead durch AES-GCM-Verschlüsselung plus Header-Routing pro
 User-Experience: verschlüsselte Calls dürfen sich nicht spürbar langsamer anfühlen als unverschlüsselte.
 
 **Acceptance Criteria**
+
 - Gemessen mit einem Test-Endpoint, der minimale Business-Logik enthält
 - Vergleichbar mit klassischer TLS-only Verschlüsselung (oft im Bereich von wenigen ms zusätzlich)
 - Mess-Werte dokumentiert
@@ -1216,6 +1353,7 @@ Der Wechsel eines Krypto-Algorithmus erfordert ausschliesslich eine Config-Ände
 Kern-Projekt-Ziel G-4. Das ist die zentrale Eigenschaft der Architektur und gleichzeitig der Hauptbeleg für die Bewertung.
 
 **Acceptance Criteria**
+
 - Wie in FR-Crypto-2 spezifiziert
 - Plus: ein Reviewer kann durch Diff von alter und neuer Config sofort sehen, was sich geändert hat, ohne den Code zu öffnen
 - Live-Demo via UC-7
@@ -1235,6 +1373,7 @@ Ein neuer externer OIDC-Provider kann ohne Architektur-Eingriff hinzugefügt wer
 Erweiterbarkeit für zukünftige Integrationen und realistisches Industrie-Pattern (Auth0/Cognito/Keycloak machen es genauso).
 
 **Acceptance Criteria**
+
 - UC-8 demonstriert dies (Apple als Beispiel-Stretch)
 - Diff zwischen alter und neuer Architektur umfasst ausschliesslich Plugin-Eintrag und Konfig, keine Code-Änderungen an bestehenden Providern
 
@@ -1253,6 +1392,7 @@ Der Code ist in klar abgegrenzte Module aufgeteilt (Auth, Broker, Token, Session
 Wartbarkeit und Verständlichkeit für Future Maintainer und für die Bewertung.
 
 **Acceptance Criteria**
+
 - Code-Review zeigt klare Modul-Grenzen
 - Keine Cross-Modul-Abhängigkeiten, die ein Modul-übergreifendes Refactoring beim Wechsel einer Implementation erzwingen würden
 - Im Bericht ist die Modul-Struktur dokumentiert (z.B. als Komponenten-Diagramm)
@@ -1274,6 +1414,7 @@ Die Login-UI bietet die drei Optionen (Email/Passwort, Google, Microsoft) klar e
 Auch für eine Mock-App soll die UX nachvollziehbar sein. Eine unverständliche UI würde von der eigentlichen PQC-Story ablenken.
 
 **Acceptance Criteria**
+
 - Subjektive Bewertung im Demo-Termin: ein erstmaliger Nutzer findet den richtigen Login-Button ohne Anleitung
 - Buttons sind klar beschriftet (kein "Login mit federated provider 1")
 - Branding der externen IdPs (Google-Logo, Microsoft-Logo) wird verwendet, wenn die Provider es vorschreiben (Compliance mit ihren Brand-Guidelines)
@@ -1293,6 +1434,7 @@ Fehlersituationen führen zu verständlichen, handlungs-orientierten Meldungen f
 Technical Errors als User-facing Meldungen sind verwirrend und ein Zeichen für unfertige Software.
 
 **Acceptance Criteria**
+
 - Alle Fehler-Szenarien aus den UCs haben eine entsprechende User-facing Meldung in der App
 - Meldungen sind in der Sprache der App (Deutsch oder English, konsistent)
 - HTTP-Status-Codes erscheinen nie direkt im UI
@@ -1314,6 +1456,7 @@ Der Auth-Service produziert strukturierte Logs (JSON) mit Severity-Levels (DEBUG
 Strukturierte Logs sind durchsuchbar, filterbar und können maschinell ausgewertet werden. Auch im Schulprojekt-Kontext ist das gute Praxis und macht Debugging einfacher.
 
 **Acceptance Criteria**
+
 - Logs sind im JSON-Format ausgegeben (eine Zeile pro Eintrag)
 - Jeder Eintrag hat mindestens: `timestamp`, `level`, `request_id`, `message`
 - Request-IDs sind durchgängig über alle Log-Einträge eines Requests
@@ -1334,6 +1477,7 @@ Sicherheits-Events (failed logins, invalid tokens, tampering attempts) werden se
 Forensik und Anomalie-Erkennung. Auch im Demo-Kontext relevant, weil im Bericht eine Sicherheits-Analyse erwartet wird.
 
 **Acceptance Criteria**
+
 - Mindestens diese Events werden ins Security-Log geschrieben: Failed Local Login, Failed Federated Login, Invalid Broker Token, AES-GCM Tag Failure, Session Expiry
 - Security-Log-Einträge enthalten kontextuelle Daten (IP, User-Agent, Request-ID), aber keine Klartext-Tokens oder Passwörter
 - Security-Log kann separat ausgewertet werden (eigene Datei oder eigener Log-Stream)
@@ -1353,6 +1497,7 @@ Der Auth-Service bietet einen `/health`-Endpoint, der den Service-Status zurück
 Operations-Best-Practice. Auch im Demo-Kontext nützlich, um vor dem Bewertungs-Termin schnell den Service-Zustand zu prüfen.
 
 **Acceptance Criteria**
+
 - `GET /health` antwortet mit `200 OK` und Body `{ status: "ok", version, uptime, registry_status }` wenn alles funktioniert
 - `503 Service Unavailable` wenn kritische Dependencies fehlen (z.B. Session-Store nicht erreichbar)
 - Endpoint ist nicht authentifiziert (öffentlich zugänglich, gibt aber keine sensitiven Daten preis)
@@ -1374,6 +1519,7 @@ Bis zur Abgabe am 04.07-05.07.2026 liegt ein vollständiger Projektbericht vor m
 Hauptbewertungs-Grundlage für die Semesterarbeit.
 
 **Acceptance Criteria**
+
 - Bericht hat alle geplanten Sektionen
 - Inhalt ist nachvollziehbar (keine offenen Verweise, keine Platzhalter)
 - Konsistent (Begriffe einheitlich, Diagramme matchend zum Text)
@@ -1394,6 +1540,7 @@ Wichtige Architektur-Entscheidungen werden in eigenen Notiz-Dokumenten festgehal
 Nachvollziehbarkeit für Bewertung und Future Maintainer. Architecture Decision Records (ADRs) sind Industrie-Standard.
 
 **Acceptance Criteria**
+
 - Mindestens diese Entscheidungs-Dokumente liegen vor zur Abgabe: Auth-Architektur (Option 3 vs. Alternativen), Tech-Stack-Wahl, Crypto-Agility-Pattern
 - Jedes Dokument enthält: Kontext, Optionen, Entscheidung, Begründung
 
@@ -1412,6 +1559,7 @@ Alle externen Quellen werden in `04_quellen.md` gepflegt und für den Bericht ü
 Wissenschaftliche Praxis und Pflicht für die Bewertung.
 
 **Acceptance Criteria**
+
 - Bericht hat ein vollständiges Quellenverzeichnis mit korrekten Zitierungen
 - Alle wichtigen Quellen (NIST-Standards, IETF-Drafts, Libraries, Schlüssel-Papers) sind enthalten
 - Format entspricht der TBZ-Vorgabe
@@ -1431,6 +1579,7 @@ Für die Bewertungs-Präsentation existiert ein schriftliches Demo-Drehbuch: was
 Bewertungs-Vorbereitung. Live-Demos können schiefgehen; ein gutes Drehbuch plus Backup-Material (Screenshots, Video-Aufzeichnung) reduziert das Risiko.
 
 **Acceptance Criteria**
+
 - Drehbuch liegt vor, mindestens 1 Woche vor Bewertungs-Termin
 - Enthält Schritt-für-Schritt-Plan inklusive Test der Crypto-Agility-Demo (UC-7)
 - Backup-Material (Screenshots, Video-Aufzeichnung) verfügbar, falls Live-Demo scheitert

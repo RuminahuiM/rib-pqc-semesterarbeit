@@ -15,9 +15,11 @@ Dependency) und zu `11_risk_register.md` (Tier 2 fuer echte Projekt-Risiken).
 - Jedes Finding bekommt eine ID (F-NNN), Severity, Trigger und Status.
 - **Trigger** beschreibt wann das Finding adressiert werden soll. Beispiele:
   "vor PQC-30", "Sprint 4 Polish", "vor Bericht-Abgabe", "bei Touch dieses Files".
+
 - Die Story-Start-Checklist im Implementation-Chat-Memory verpflichtet mich,
   diese Liste bei jeder neuen Story zu konsultieren wenn der Story-Scope einen
   hier gelisteten Bereich beruehrt.
+
 - Status: `open` = noch offen, `in-progress` = in einer laufenden Story, `resolved` = erledigt.
 - Findings die zu konkreten Jira-Stories werden, behalten ihren Eintrag hier
   mit Status `resolved` und Verweis auf die Jira-Story die sie geschlossen hat.
@@ -118,6 +120,7 @@ ein neues Finding plus ein bestehendes geloest.
 
 PQC-22 Closing-Review: F-015 in der Story selbst geloest (Exception-Klausel
 eingegrenzt). Vier neue Tier-2-Findings F-020 bis F-024:
+
 - F-020: purpose-Parameter funktional inaktiv in Sprint 1
 - F-021: Log-Frequency auf sign/verify (Should, vor PQC-30)
 - F-022: verify-result-Logging (Info, mit F-021 zusammen)
@@ -151,12 +154,15 @@ die uebrigen Tier-2-Polish.
 ### Historie-Update 28.05.2026
 
 PQC-32 Closing-Review: 6 neue Findings F-025 bis F-030. Highlights:
+
 - **F-028 (Tier 1):** TOK-2 (PQC-33) muss alg-Allowlist haben. Wird beim PQC-33-
   Story-Start als zusaetzlicher AC eingebaut (RFC 8725 BCP-Konformitaet). Auch
   als Tier-2-Notiz hier, damit Doku-Spur erhalten bleibt.
+
 - **F-026 (Should):** sub-Logging auf INFO-Level. Bei TOK-1 noch low-volume,
   aber bei AUT-3 wird Token-Ausstellung hochfrequent. Zusammen mit F-021
   (sign/verify INFO-Level) als Bundle vor PQC-30 angehen.
+
 - **F-029 (Tier 3):** Lessons-Learned aus Demo-Verifikation - das
   `from main import app` Anti-Pattern wandert ins Memory der Demo-Konvention.
 
@@ -188,9 +194,11 @@ verifiziert (7 Verify-Szenarien). 3 neue Tier-2-Polish-Findings.
 
 PQC-33 Closing-Review: F-028 in der Story selbst resolved (als AC-6
 implementiert), 3 neue Tier-2-Findings F-031 bis F-033. Highlights:
+
 - **F-031 (Should):** Audit-Logging fuer Verify-Errors fehlt. Bundle mit
   F-021 (sign/verify INFO Frequenz) und F-026 (sub-Logging) ergibt ein
   konsistentes "Logging-Hardening"-Paket vor PQC-30.
+
 - **F-032 plus F-033 (Info):** Sprint-3-Polish, optional. Aktueller Code
   ist RFC-konform aber nicht maximal-streng. Wuerde bei einem strengen
   Audit-Penetration-Test wahrscheinlich nicht durchfallen.
@@ -221,9 +229,11 @@ adressiert werden.)
 
 PQC-28 Closing-Review: 5 neue Tier-2-Findings F-034-F-039 (F-036 ist Duplikat
 von F-012, daher uebersprungen). Highlights:
+
 - **F-039 (Should):** Password-Pepper als Sprint-3-Polish vor Production
   hinzufuegen. Aktuell sind die Salts (16 Bytes random pro Hash) bereits
   starke Defense, aber ein Pepper waere zusaetzliche Tiefe.
+
 - **F-034 / F-038 sind PQC-30-related** und sollten dort entschieden werden.
 - Logging-Hardening-Bundle waechst: F-021, F-026, F-031, F-034. Vor PQC-30
   als ein zusammenhaengender Refactoring-Pass.
@@ -263,6 +273,7 @@ Vor PQC-30 (AUT-3) als kleiner Refactor-Pass durchgezogen:
 | F-034 | email-Logging bei `user.created` | bewusste Entscheidung: NICHT loggen (Privacy-by-Design, user_id reicht fuer Forensik via DB-Lookup) | resolved (decision documented) |
 
 **Restliche offene Logging-Findings:**
+
 - F-022 (verify-result True/False weiterhin geloggt): bewusst behalten, hilft bei Forensik (Side-Channel via Log-Aggregator ist Sprint-3-Polish wenn Real-Production-Deployment).
 
 
@@ -427,11 +438,14 @@ Fuer das Risk Register (docs/11_risk_register.md) als neuer Eintrag empfohlen:
   hinterher. Bei Projekt-Init kann der Default neuer sein als die supportete
   SDK im App Store. Devices ohne TestFlight-Beta-Access bekommen
   Incompatibility-Error.
+
 - **Wahrscheinlichkeit:** HOCH (bereits eingetreten in PQC-20)
 - **Impact:** NIEDRIG (Downgrade dauert <5min, alle benoetigten Features in
   aelteren SDKs verfuegbar)
+
 - **Mitigation:** Bei `create-expo-app` immer pruefen welche SDK-Version
   Expo Go aktuell supportet, ggf. mit `--sdk-version` Flag pinnen
+
 - **Status:** Mitigated in PQC-20 (Downgrade auf SDK 54)
 
 ### Historie-Update 30.05.2026 (PQC-20)
@@ -576,6 +590,7 @@ Identity-Normalisierung + Account-Linking implementiert. user_identities-Tabelle
 ### Historie-Update 17.06.2026 (PQC-39)
 
 End-to-End-Server-Pfad funktional komplett:
+
 - BRK-1 Plugin-Registry (PQC-36)
 - BRK-2 OIDC Code Flow + PKCE (PQC-37)
 - BRK-3 ID-Token-Verify (PQC-38)

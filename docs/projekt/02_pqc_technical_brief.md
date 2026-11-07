@@ -38,6 +38,7 @@ The HNDL threat is **already exploitable today** (anyone can record traffic now,
 For X25519MLKEM768 specifically: client share 1216 B (1184 ML-KEM + 32 X25519), server share 1120 B; shared secret is the concatenation, 64 B total. The "hybrid" property means a break in *either* X25519 or ML-KEM still leaves the connection secure — important because ML-KEM is young, ECDH is not yet broken.
 
 **Deployed default in:**
+
 - Chrome ≥ 131 (Nov 2024)
 - Firefox ≥ 132
 - Edge ≥ 131
@@ -50,6 +51,7 @@ For X25519MLKEM768 specifically: client share 1216 B (1184 ML-KEM + 32 X25519), 
 ### Authentication / signatures — **still a draft**
 
 `draft-ietf-tls-mldsa-01` defines three new SignatureScheme code points:
+
 - `mldsa44` (0x0904)
 - `mldsa65` (0x0905)
 - `mldsa87` (0x0906)

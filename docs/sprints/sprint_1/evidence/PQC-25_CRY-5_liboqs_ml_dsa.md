@@ -76,10 +76,12 @@ Drei Container `healthy` auch mit dem neuen liboqs-fähigen Image.
 1. ``crypto.registry.initialized`` zeigt ML-DSA-65 als registrierten
    Signatur-Algorithmus. Hinter dem Namen steckt jetzt ``LibOqsSignature``
    (nicht mehr ``PlaceholderSignature``).
+
 2. ``crypto.signing_key.generated`` mit **public_key_len: 1952** und
    **secret_key_len: 4032**. Das sind exakt die FIPS 204 ML-DSA-65 Schluessel-
    Groessen (1952 Byte Public Key, 4032 Byte Secret Key). Beweist dass die
    Schluessel real generiert wurden, nicht stubbed.
+
 3. ``/health`` antwortet weiterhin 200 OK, die Lifespan-Erweiterung um Crypto-
    Init plus Key-Generierung hat den Service-Start nicht gebrochen.
 
@@ -103,23 +105,29 @@ Test-Coverage gedeckt.
   liboqs-Build aus Source ausloest. Resultat: erster Container-Start ist
   sofort fertig, kein 5-Minuten-Warten zur Runtime. Layer-Cache greift bei
   Folge-Builds.
+
 - **System-Dependencies fuer den C-Build:** ``build-essential``, ``cmake``,
   ``ninja-build``, ``git``, ``libssl-dev``. Diese vergroessern das Image,
   koennten in einer spaeteren Multi-Stage-Polish-Story (Sprint 4) auf eine
   reine Runtime-Image-Stage uebertragen werden.
+
 - **liboqs-python ``Signature(alg)`` Context Manager statt globaler Instanz.**
   Jeder sign/verify-Call oeffnet einen frischen Kontext. Klar abgegrenzte
   Lifetimes, kein Risiko von Memory-Leaks bei langlebigen App-Instances.
+
 - **Stateless Plugin-API.** ``LibOqsSignature.sign(message, secret_key)``
   bekommt den Key als Parameter, kein interner State. Damit ist das Plugin
   thread-safe und passt zur ``SignaturePlugin`` Protocol-Definition aus CRY-1.
+
 - **Key-Persistierung im Filesystem mit chmod 0600.** Sprint-1-pragmatisch.
   Spaetere Stories koennten einen HSM- oder Vault-Adapter einfuehren, das
   ``crypto/keys.py``-Modul ist die saubere Stelle dafuer.
+
 - **Auto-keygen nur in Dev-Modus.** In Production (``RIB_ENVIRONMENT=prod``)
   wirft fehlender Key-File einen Fehler. Damit unmoegliche
   Bootstrap-Reihenfolge in Production verhindert (vorgenerierter Key muss
   ins Volume).
+
 - **Whitelist-Validierung in beiden Schichten:** ``LibOqsSignature`` selber
   und ``init_crypto_registry`` weisen unbekannte Algorithmus-Namen
   (Pre-Standard wie ``Dilithium3``) zurueck. Defense-in-Depth.
@@ -136,8 +144,10 @@ Hinweis auf PQC-25-Evidence. Das ist Co-SM-Chat-Thema.
 - **Image-Groesse:** Inklusive Build-Tools und kompilierter liboqs ist das
   ``rib-pqc-auth-service:dev`` Image deutlich groesser als vorher. Multi-Stage-
   Build ist Sprint-4-Polish-Kandidat (Finding F-006 / F-007 verwandt).
+
 - **Kein KEM-Adapter in dieser Story.** CRY-3 (PQC-23) ergaenzt ``LibOqsKem``
   fuer ML-KEM-768. ``PlaceholderKem`` bleibt aktuell registriert.
+
 - **Pure-Python-Tests koennen liboqs nicht ohne Container nutzen.** Tests in
   ``test_liboqs_signature.py`` skippen sauber via ``pytest.importorskip("oqs")``
   wenn liboqs lokal fehlt. Im Container und auf User-Maschinen mit installiertem

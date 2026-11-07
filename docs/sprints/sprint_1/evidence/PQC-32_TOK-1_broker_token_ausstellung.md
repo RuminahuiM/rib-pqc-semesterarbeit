@@ -100,6 +100,7 @@ verify (tampered): False
 | AC-5 | TTL aus `token.ttl_seconds` (Config) | `exp - iat = 3600` bei Default. Test `test_issue_exp_equals_iat_plus_ttl` (parametrisiert mit 7200). Config-Loading-Test zeigt `token.ttl_seconds=3600`. |
 
 Zusatzlich:
+
 - Round-Trip `CryptoFacade.verify(signing_input, signature, alg, kid) == True` fuer local plus federated.
 - Tamper-Detection: veraenderte signing_input fuehrt zu `verify == False`.
 

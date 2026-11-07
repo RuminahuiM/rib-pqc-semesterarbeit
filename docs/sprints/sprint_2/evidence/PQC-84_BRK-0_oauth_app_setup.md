@@ -81,6 +81,7 @@ scopes: ['openid', 'profile', 'email']
 Waehrend Setup wurde der Google Client-Secret als JSON-Datei in den Chat hochgeladen, und das Microsoft Client-Secret-Value explizit im Chat als Text geteilt. Beide Werte stehen damit in der Implementation-Chat-History.
 
 Risiko-Einschaetzung: **NIEDRIG** weil
+
 - Beide OAuth-Apps sind Test-Apps in Test-Tenants
 - Google-App ist in Testing-Phase (External, nur App-Owner/Test-Users)
 - Microsoft-App ist Single-Tenant mit nur Test-Account-Inhaber
@@ -100,6 +101,7 @@ Mitigation-Strategie: F-056 sieht Rotation am Sprint-Ende vor. Sicherheitsbewuss
 ## Demo-Material
 
 Reproduzierbares Browser-Demo:
+
 1. Server-Setup laeuft, OAuth-Credentials in `.env` geladen
 2. Tester paste die Authorize-URL in Browser
 3. Provider-Login-Seite kommt mit App-Name `rib-pqc`

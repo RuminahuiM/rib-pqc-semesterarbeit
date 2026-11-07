@@ -13,6 +13,7 @@ sie brauchen je eine eigene Jira-Story, weil sie:
 - konkret-actionable sind
 - eine Story-Dependency haben (alle blocken PQC-30 AUT-3, da sie vor dem ersten
   echten Auth-Endpoint produktiv da sein muessen)
+
 - nicht in PQC-19 selbst gepasst haetten (Scope-Creep)
 
 Alle fuenf Stories sollten ein neues Epic bekommen: **EPIC SEC: Security
@@ -209,6 +210,7 @@ damit Brute-Force-Angriffe auf /auth/local/login unterbunden werden.
 4. Sprint-Zuweisung: alle in Sprint 1 oder Sprint 2 (Co-SM-Chat entscheidet,
    ich kann fuer Sprint 1 nur SEC-1, SEC-2, SEC-3 empfehlen weil zeitlich
    passend, SEC-4 und SEC-5 sind groesser).
+
 5. `docs/13_deferred_findings.md` updaten: die TBD-Eintraege durch echte
    PQC-Keys ersetzen.
 
@@ -216,5 +218,6 @@ damit Brute-Force-Angriffe auf /auth/local/login unterbunden werden.
 
 - SEC-4 koennte in zwei Stories aufgespalten werden, falls CSP fuer /docs
   Swagger-UI mehr Arbeit ist als erwartet.
+
 - SEC-5 koennte mit einem Stretch-AC zur Distributed-Rate-Limit-Lockout
   erweitert werden, dafuer kuerzere AC-Liste in PQC-31 (AUT-4 User-Enumeration).

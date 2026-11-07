@@ -20,6 +20,7 @@
 
 PQC-62 ist effektiv die Implementation-Details die PQC-57 AC-3 verlangt. Keine
 neuen Files ueber PQC-57 hinaus:
+
 - `app/src/lib/secureStore.ts`: saveToken / loadToken / deleteToken
 - `app/src/contexts/AuthContext.tsx`: nutzt die secureStore-Helper
 

@@ -20,8 +20,10 @@ damit der Client einen unterstuetzten Algorithmus waehlen und retried.
 ## In PQC-49 implementiert
 
 **Aenderungen:**
+
 - `server/tests/test_session_router.py`: 2 neue dezidierte SES-4-Tests
   am Ende der Datei (in einer eigenen Section):
+
   - `test_ses4_mismatch_response_includes_supported_algorithms_list`:
     Server-supported=[ML-KEM-768], Client-request=Kyber768, prueft 406
     plus vollstaendige supported_algorithms-Liste.
@@ -98,6 +100,7 @@ Keine Must-/Should-Fixes.
 
 - **PQC-26 CRY-6 Client-Side Crypto-Abstraction (5 SP):** App-Side-Retry-
   Loop fuer AC-2. Konsumiert SES-4-Spec aus wire_format.md Sec 3.3.
+
 - **Mini-Demo D-008-Vorlaeufer:** mit SES-1 + SES-2 + SES-3 + SES-4 ist
   der Session-Server-Block voll. Container + curl-Demo mit
   Negotiation-Roundtrip ist jetzt sinnvoll vor DCH-Start.

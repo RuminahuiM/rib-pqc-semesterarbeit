@@ -22,16 +22,20 @@ SES-3 (SessionService) + TOK-2 (Token-Verify).
 ## In PQC-46 implementiert
 
 **Neue Files:**
+
 - `server/routers/session.py` (~290 Zeilen): POST /session/init Handler mit
   vollstaendigem Fehler-Mapping (401 invalid_token, 406 kem_alg_not_supported,
   400 invalid_encapsulation_key (Decode oder Length), 422 Pydantic-Missing).
+
 - `server/tests/test_session_router.py` (12 Tests): httpx-AsyncClient gegen
   ASGI-Transport mit Mock-Facade + Mock-TokenService + fakeredis.
 
 **Aenderungen:**
+
 - `server/services/session_service.py`: API-Erweiterung um
   `generate_session_id()` (Static) und `create_with_id(session_id, ...)` plus
   `_persist_record`-internem Helper (F-102 Refactor). Backward-compatible.
+
 - `server/main.py`: Router included via `app.include_router(session.router)`.
 
 ## Architektur-Entscheidungen
@@ -105,7 +109,9 @@ PQC-49 SES-4 oder spaetestens vor DCH-3.
 - **PQC-49 SES-4 Algorithmus-Negotiation (3 SP):** wir haben 406-Response
   bereits implementiert + getestet, SES-4-Story kann jetzt nur noch
   Client-Retry-Pattern + Cross-Doku-Update enthalten.
+
 - **Mini-Demo D-008-Vorlaeufer:** SES-1 + SES-3 + SES-2 + TOK-2 in einer
   Pipeline. Container-up + curl-Demo nach SES-4.
+
 - **PQC-50 DCH-1 AES-GCM Wrapper:** baut auf Session-Key auf, Nonce-Konvention
   per F-092.

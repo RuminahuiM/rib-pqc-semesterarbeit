@@ -34,8 +34,10 @@ als Build-Base fuer nginx eignet:
 
 - oqs-ossl3 ist Alpine-basiert mit OpenSSL3 + oqs-provider unter `/opt/openssl`,
   aber System-OpenSSL ist separat
+
 - `apk add nginx` wuerde nginx gegen System-OpenSSL linken, nicht gegen den
   oqs-faehigen OpenSSL
+
 - Damit waere nginx zwar im Image, aber TLS-Handshake mit X25519MLKEM768 wuerde
   fehlschlagen
 
@@ -49,11 +51,14 @@ Story-Start-Comment dokumentiert.
 - `infra/nginx/Dockerfile.nginx` (NEU, 110 Zeilen): Multi-Stage Build mit
   Alpine 3.21 Base, OpenSSL 3.5.0 + liboqs 0.14.0 + oqs-provider 0.10.0 +
   nginx 1.27.5 aus Source, self-signed Test-Cert mit ML-DSA-65, Healthcheck
+
 - `infra/nginx/nginx.conf`: ergaenzt um Server-Block fuer Port 443 mit TLS 1.3
   + `ssl_ecdh_curve X25519MLKEM768:X25519:secp384r1:prime256v1` + `/pqc-test`
   Smoke-Endpoint
+
 - `infra/docker-compose.yml`: nginx-Service auf `build: ./nginx` umgestellt
   (image `rib-pqc-nginx:0.1`), Port 443 zusaetzlich gemapped
+
 - `infra/.env.example`: `NGINX_HTTPS_PORT=8443` Default
 
 ## Live-Verifikation

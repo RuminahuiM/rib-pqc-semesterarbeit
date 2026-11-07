@@ -56,6 +56,7 @@ App-Store-Expo-Go-Kompatibilitaet (iPhone-Demo-Constraint).
 ## Live-Verifikation auf iPhone
 
 User-Bestaetigung (2026-05-30):
+
 - App laedt via Expo Go QR-Scan
 - Login-Screen zeigt drei Buttons
 - "Email / Password" tippen -> push zu /home
@@ -69,6 +70,7 @@ User-Bestaetigung (2026-05-30):
 | F-054 | SDK 54 statt 56 (App-Store-Expo-Go-Kompatibilitaet). FINAL fuer Projekt-Lebenszyklus, kein Upgrade-Pfad geplant solange iPhone-Demo-Constraint besteht. | Info | Sprint 4 falls App-Store SDK 55/56 nachzieht (unwahrscheinlich vor 04.07.2026) | open |
 
 **Risk-Register-Empfehlung (Hand-Off Co-SM-Chat):**
+
 - R-N01: Expo SDK Version nicht in App Store verfuegbar. Wahrscheinlichkeit HOCH (bereits eingetreten), Impact NIEDRIG (Downgrade <5min, alle Features in SDK 54 verfuegbar). Mitigated in PQC-20.
 
 ## Aufwand

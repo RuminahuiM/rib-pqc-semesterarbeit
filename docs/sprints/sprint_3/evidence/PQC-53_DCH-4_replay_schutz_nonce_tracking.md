@@ -40,6 +40,7 @@ cd server && python3 -m pytest
 ## Architektur-Entscheidungen (Trade-Off Stateful vs Timestamp)
 
 Stateful gewaehlt. Begruendung in `nonce_tracker.py` Module-Docstring:
+
 - Redis ist bereits Teil der Architektur (SES-3, Rate-Limit, OIDC-State).
 - Mobile-Clock-Skew bei iPhones macht Timestamp-Toleranz-Window unzuverlaessig.
 - Deterministisches Verhalten ohne Toleranz-Edge-Cases.
@@ -49,6 +50,7 @@ Stateful gewaehlt. Begruendung in `nonce_tracker.py` Module-Docstring:
 ## Reihenfolge-Refactor (DCH-2-Anpassung)
 
 PQC-51 hatte `has_seen` -> `decrypt` -> `record`. Das war race-anfaellig (parallel-Requests koennten beide has_seen=False sehen, beide durchlaufen). PQC-53 ersetzt das durch:
+
 1. Format-Check Headers + Nonce-Laenge
 2. SessionService.get (session_expired?)
 3. AEAD-Decrypt + JSON-Parse

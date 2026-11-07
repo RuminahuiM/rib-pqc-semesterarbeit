@@ -462,6 +462,7 @@ Sprint Review (`03_review.md` ausfüllen), Sprint Retrospective (`04_retrospecti
 **Sprint-Goal-Stand (End-to-End-Login):**
 
 Konkrete Restbedarf für Sprint-Goal:
+
 - Test-User via Admin-CLI angelegt: PQC-29 (In Review, fast da).
 - POST `/auth/local/login` mit Email plus Passwort: PQC-30 (AUT-3, offen, 5 SP M).
 - ML-DSA-65-signierter Broker-Token zurück: PQC-32 Done.

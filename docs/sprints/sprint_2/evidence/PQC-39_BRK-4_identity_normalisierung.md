@@ -62,13 +62,16 @@ Volle Suite **211 passed** (vorher 188), 4 erwartete Skips (liboqs-Sandbox).
 Ruff `All checks passed`.
 
 Test-Cluster:
+
 - **UserIdentityRepository:** Create-Happy, find_by_external Hit/Miss,
   Duplicate-Constraint-Error, invalid auth_method, empty external_sub,
   list_for_user, unknown-user-empty.
+
 - **FederatedIdentityService:** Erst-Login mit Email, Erst-Login ohne Email
   (Placeholder), Repeat-Login (gleiche User-ID), Email-verified-Linking,
   Email-unverified-keine-Linking (raises), Email-unverified-Neuer-User
   (kein Konflikt), Multi-Provider-zu-gleichem-User.
+
 - **Plugin-Mapper:** Google Happy, email_unverified, missing sub,
   fallback given_name. Microsoft Happy, preferred_username-fallback,
   no-email-unverified, missing oid.
@@ -113,6 +116,7 @@ End-to-End-Server-Pfad ist nach BRK-4 funktional komplett:
 - BRK-5/BRK-6 (PQC-40/41) sind nun groesstenteils Polish: alle Logik ist in
   BRK-1..BRK-4 implementiert. Wenn der User die Stories beruehren will,
   werden sie wahrscheinlich nur Sanity-Check + Demo-Validierung.
+
 - BRK-7 (PQC-42) ist die geplante Hardening-Story mit F-063 + TTL-Real-Test.
 - TLS-Stories (PQC-43/44/45) sind unabhaengiger Pfad.
 - App-Stories (PQC-60/61) brauchen nur noch APP-Code, Server-Backend ist

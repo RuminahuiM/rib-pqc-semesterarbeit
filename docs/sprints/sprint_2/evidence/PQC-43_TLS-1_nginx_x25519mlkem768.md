@@ -32,12 +32,15 @@ decrypt later"-Angriffe (NSA Suite Quantum-Safe Crypto Empfehlung).
   Standard-Signature-Algorithm** festgelegt (PQC-22 CRY-2, TokenService).
   Ein klassisches ECDSA-Cert waere ein Bruch in der ansonsten end-to-end
   PQC-konformen Architektur.
+
 - **Bonus PQC-Layer:** Mit ML-DSA-65-Cert sind **sowohl** der Key-Exchange
   (X25519MLKEM768) **als auch** die Server-Authentizitaet (ML-DSA-65)
   post-quantum-resistent. Klassische ECDSA-Certs sind durch
   Shor's-Algorithmus auf Quantum-Computern brechbar.
+
 - **PQC-Bericht-Wert:** Hybrid-TLS mit PQC-Cert ist eine seltene aber
   zeigbare Komplett-PQC-Demo, sehr wertvoll fuer die HEKS-Semesterarbeit.
+
 - **Browser-Kompatibilitaet:** Self-signed Test-Cert ohne Trust-Chain wird
   vom Browser eh als untrusted markiert. ML-DSA-65-Sig wird vom Browser
   noch nicht unterstuetzt, aber das macht fuer den Test-Setup keinen
@@ -54,6 +57,7 @@ alle PQC-43 AC ab:
 - AC-1 (X25519MLKEM768): `infra/nginx/nginx.conf` Line 79
 - AC-2 (Self-signed Cert): `infra/nginx/Dockerfile.nginx` baut das Cert
   im Container mit OpenSSL 3.5 + oqs-provider (ML-DSA-65-Signature).
+
 - AC-3 (nginx startet): in PQC-18 verifiziert via Container-Smoke-Test
 - AC-4 (TLS 1.3): `infra/nginx/nginx.conf` Line 76
 
@@ -69,9 +73,11 @@ Konfiguration via Code-Review + PQC-18-Container-Smoke-Test, der bereits
 gemacht wurde.
 
 PQC-18 Live-Smoke-Test (aus Sprint-1-Demos dokumentiert):
+
 - Container `pqc-nginx` startet ohne nginx-Fehler.
 - `/pqc-test` antwortet via TLS 1.3 mit `Protocol: TLSv1.3` und
   `Cipher: TLS_AES_256_GCM_SHA384`.
+
 - Hybrid-Group X25519MLKEM768 wird in TLS-Handshake angeboten (verifiziert
   via `openssl s_client -groups X25519MLKEM768` aus oqs-OpenSSL CLI).
 
@@ -99,8 +105,10 @@ F-053 Image-Tag) bleiben relevant fuer Sprint 4 Production-Hardening.
 
 - AC-Cross-Reference auf `infra/nginx/nginx.conf` Line 76+79 (TLS 1.3 +
   X25519MLKEM768)
+
 - AC-Cross-Reference auf `infra/nginx/Dockerfile.nginx` Multi-Stage-Build
   (OpenSSL 3.5 + oqs-provider + ML-DSA-65-Cert-Gen)
+
 - volle Suite 215/215 gruen (kein Regress aus PQC-42)
 
 ## Story-Aufwand
@@ -116,5 +124,6 @@ F-053 Image-Tag) bleiben relevant fuer Sprint 4 Production-Hardening.
 
 - PQC-44 TLS-2 (2 SP): vermutlich PQC-Cipher-Suiten-Audit/Tuning oder
   HSTS-Doku-Polish.
+
 - PQC-45 TLS-3 (2 SP): End-to-End-Routing zu auth-service ueber 443 +
   Live-Smoke mit Hybrid-Handshake-Verifikation.

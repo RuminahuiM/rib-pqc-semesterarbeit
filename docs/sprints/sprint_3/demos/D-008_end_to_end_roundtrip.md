@@ -12,6 +12,7 @@ PQ-Schichten gleichzeitig**:
 
 - **Transport-Layer-PQ:** X25519MLKEM768 im TLS-Handshake (Sprint-2
   PQC-43/44/45, nginx mit oqs-provider)
+
 - **Application-Layer-PQ:** ML-KEM-768 fuer Session-Handshake +
   AES-256-GCM-Channel (Sprint-3 DCH-Block)
 

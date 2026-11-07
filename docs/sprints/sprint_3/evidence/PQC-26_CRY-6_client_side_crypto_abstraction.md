@@ -24,20 +24,26 @@ fuer Sprint-3-Folge-Stories (APP-2/3/5/6) und Sprint-4.
 
 - `app/jest.config.js` (NEU, 28 Zeilen): Jest-Config mit ts-jest-Preset,
   testEnvironment node, isolatedModules-Compile fuer Schnelligkeit.
+
 - `app/src/crypto/config.ts` (42 Zeilen): Algorithm-Whitelisten + Defaults +
   AES-GCM-Konstanten + isKemSupported-Type-Guard.
+
 - `app/src/crypto/kem.ts` (93 Zeilen): kemKeygen/kemEncapsulate/kemDecapsulate
   als API analog server/crypto/adapters/liboqs_kem.py. Switch auf ml_kem768
   bzw. ml_kem1024 abhaengig von alg-Parameter.
+
 - `app/src/crypto/hkdf.ts` (53 Zeilen): deriveKey + deriveSessionKey
   Convenience-Wrapper, matched SES-2-Konvention.
+
 - `app/src/crypto/cipher.ts` (78 Zeilen): aeadEncrypt/aeadDecrypt mit AES-256-GCM
   via @noble/ciphers. randomNonce() Helper. AeadDecryptError-Wrapper analog
   Python AeadDecryptError aus CRY-3.
+
 - `app/src/crypto/hash.ts` (17 Zeilen): hashSha256-Wrapper.
 - `app/src/crypto/signature.ts` (41 Zeilen): signatureVerify-only (ML-DSA-65).
   Sign ist Server-Only (TokenService.issue PQC-32), App hat absichtlich
   keinen sign().
+
 - `app/src/crypto/index.ts` (22 Zeilen): Barrel-Export.
 - 6 Test-Files in `app/src/crypto/__tests__/` (380 Zeilen total): config,
   kem (parametrisiert 768/1024 + Implicit-Rejection), **hkdf (mit F-098
@@ -83,8 +89,10 @@ auf der User-Maschine bzw. CI.
   sauber, mit \n abgeschlossen, keine Truncation. `tsc --noEmit` zeigt
   nur "Cannot find module @noble/*"-Errors (npm install fehlt) - keine
   echten Syntax-Errors.
+
 - Server-Regression-Test: `pytest --no-cov -q` weiterhin 248 passed,
   5 skipped (keine Server-Aenderung in dieser Story).
+
 - App-Tests laufen lokal beim User via `cd app && npm install && npm test`.
 
 ## Closing-Review (10 Kategorien)
@@ -146,9 +154,12 @@ Keine Must-Fixes. F-106 ist Should-Hotfix-empfohlen (pre-existing), nicht Teil d
 
 - **PQC-58 APP-5 SessionContext (2 SP):** nutzt `crypto/` zur Session-Init-
   Orchestrierung in der App.
+
 - **PQC-59 APP-6 secureClient.ts (5 SP):** nutzt aeadEncrypt/Decrypt fuer
   Encrypted-Channel-Requests. Inkl. Retry-Loop fuer SES-4-406.
+
 - **PQC-56 APP-3 Profile-Screen (5 SP):** End-to-End-Demo mit dem
   abgeleiteten Session-Key.
+
 - **F-106 Hotfix login.tsx**: separater Commit empfohlen vor APP-Stories
   weiterlaufen.

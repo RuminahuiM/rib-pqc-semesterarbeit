@@ -89,6 +89,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Komplette PQC-Funktionalität (ML-KEM, ML-DSA) blockiert. Sprint 1 und 3 betroffen.
 
 **Mitigation:**
+
 - Container-First-Ansatz: openquantumsafe/oqs-ossl3-Image als Docker-Base (vermeidet 2-Day-Yak-Shave beim Bauen).
 - Frühe Verifikation in Sprint 0 (INF-3, INF-4): wenn das Image baut, ist das Risiko bereits stark reduziert.
 - Versionen explizit pinnen.
@@ -108,6 +109,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Mobile-PQ-Code muss angepasst werden, ggf. mehrere Stories (CRY-6, APP-6, APP-7) betroffen.
 
 **Mitigation:**
+
 - Version pinning in package.json mit exakter Version (kein Caret).
 - Eigene Crypto-Abstraction-Layer (CRY-6) kapselt die API, sodass Application-Code nicht direkt von Breaking Changes betroffen ist.
 - Library-Releases im Auge behalten via GitHub Watch.
@@ -125,6 +127,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Demo funktioniert nur auf einer Plattform, oder OAuth-Redirects bekommen Deep-Link-Probleme.
 
 **Mitigation:**
+
 - `react-native-get-random-values` als Polyfill installieren (Sprint 1, SKL-2).
 - Test-Phone mit nur einer Plattform fokussieren (iOS oder Android), nicht beide.
 - Plattform-spezifisches Verhalten dokumentieren.
@@ -142,6 +145,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Sprint 2 Sprint-Goal (Federation) nicht erreichbar. Verzug ins Sprint 3.
 
 **Mitigation:**
+
 - OAuth-App-Setup schon in Sprint 1 parallel zur Server-Arbeit beginnen (kein Implementations-Blocker).
 - Microsoft schwerer als Google, also zuerst Google fertig stellen, dann Microsoft.
 - Schrittweise testen mit curl/Postman vor Mobile-Integration.
@@ -159,6 +163,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** TLS-PQ am Server (NFR-Sec-1) nicht demonstrierbar. App-Layer-PQ funktioniert weiterhin.
 
 **Mitigation:**
+
 - openquantumsafe/oqs-ossl3 als Docker-Base (offizielles Image).
 - Sprint 0 INF-4 verifiziert das Image schon ohne nginx-Config.
 
@@ -175,6 +180,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Sessions verfallen falsch, oder Replay-Schutz funktioniert nicht.
 
 **Mitigation:**
+
 - Integration-Tests mit echtem Redis (SES-3, DCH-4).
 - Standard-Patterns nutzen (redis-py async API).
 
@@ -191,6 +197,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** APP-7 plus APP-8 Mobile-Demo-Flow ist nicht End-to-End auf iPhone reproduzierbar. Sprint-Goal Variante B müsste auf Variante "Server-Side Federation plus PQC-TLS plus reduzierte Mobile-Demo" angepasst werden.
 
 **Mitigation:**
+
 - expo-auth-session Library nutzen die Deep-Link-Handling abstrahiert.
 - Custom-Scheme `rib-pqc://` in app.json definieren plus bei Google/Microsoft OAuth-App als Redirect-URI eintragen.
 - Bei APP-7 Closing-Review explizit den Deep-Link-Pfad auf echtem iPhone testen (nicht nur Simulator).
@@ -210,6 +217,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz:** Die Mobile-Federation-Flows (APP-7, APP-8) wurden während Sprint 2 nur über den Browser verifiziert, nicht aus der Expo-Go-App selbst gegen das echte HTTPS-Backend. Die App kann zwar OAuth-Authorization-Flows starten (das macht intern Safari View Controller / Chrome Custom Tab, also Browser-TLS), aber nachfolgende HTTP-Calls vom App-JavaScript an den Backend-Endpoint können den PQC-TLS-Handshake nicht abschliessen.
 
 **Mitigation:**
+
 - Dokumentation als Projekt-Limitation im Schlussbericht. Production-Path würde Custom-Native-Module mit eigener TLS-Lib (z.B. liboqs-bindings für React Native) erfordern.
 - Demo-Strategie: Backend-PQC-TLS via openssl/oqs-curl/Chrome demonstrieren (siehe D-005 plus D-007), Mobile-Flows zusätzlich gegen das Backend via Browser-zu-Server-Pfad.
 - Für den Bericht: das ist ein ehrlicher Befund aus Sprint 2 und kein Implementierungs-Fehler, sondern eine OS-Plattform-Limitation.
@@ -231,6 +239,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Stories bleiben pro Sprint liegen, kumulieren, Sprint 4 wird unrealistisch.
 
 **Mitigation:**
+
 - 20 Prozent Kapazitäts-Reserve pro Sprint eingeplant (`08_scrum_setup.md` 8.4).
 - Pro Sprint-Planning aggressive Selektion auf realistisches Top-Set.
 - Sprint-Stretch-Markierung als Reserve, nicht als zusätzliches Commitment.
@@ -248,6 +257,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz:** Sprint 4 wurde von 14 auf 7 Tage gekürzt, Sprint 1 ebenfalls auf 7 Tage komprimiert zur Kompensation. Code-Freeze bleibt bei 28.06.
 
 **Mitigation (im Nachhinein):**
+
 - Bewusste, dokumentierte Verlängerung als Adaption-Akt.
 - Architektur-Entscheidung (Option 2), Requirements/Design, Backlog und Jira-Setup fertig.
 - Sprint 1 als empirisches Experiment für AI-unterstützte Schätz-Genauigkeit (siehe `09_product_backlog.md` Abschnitt 5).
@@ -265,6 +275,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Synchroner Mentor-Termin findet zu unpassendem Zeitpunkt statt, oder muss verschoben werden.
 
 **Mitigation:**
+
 - Bei Mentor 1 am 01.06 direkt die nächsten zwei Termine vorschlagen.
 - Ziel-Zeitfenster: Termin 2 Mitte Sprint 3 (ca. 19.06 bis 22.06), Termin 3 Anfang Sprint 4 (ca. 30.06 bis 01.07).
 
@@ -281,6 +292,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Bericht oder Präsentation unvollständig, Bewertungs-Kriterien 1 bis 5 leiden.
 
 **Mitigation:**
+
 - Während Sprint 1 bis 3 schon Notizen für Bericht sammeln im Sprint-Journal.
 - Markdown-Dokumente (`03_entscheidung`, `05_requirements`, `07_design`, `08_scrum_setup`, dieses Risk Register, etc.) sind bereits Bericht-Material und werden im Sprint 4 nur konsolidiert.
 - Falls Sprint 3 schnell läuft, Bericht-Start in Sprint 3 letzte Woche ziehen.
@@ -298,6 +310,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Sprint 2 Start verzögert, Federation nicht bis Mentor 1 demonstrierbar.
 
 **Mitigation:**
+
 - OAuth-App-Setup parallel in Sprint 1 starten, nicht erst in Sprint 2.
 - Google-Cloud-Console und Microsoft-Entra-Portal bereits konfiguriert haben, bevor BRK-2 anläuft.
 
@@ -314,6 +327,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Sprint 3 muss Scope reduziert werden, einzelne Should-Items (SES-4 Algorithmus-Negotiation, APP-Stories) ggf. streichen oder ins Stretch verschieben.
 
 **Mitigation:**
+
 - **Sprint 4 ist unantastbar.** Sprint 3 endet wie ursprünglich geplant am 28.06.2026, weil Sprint 4 (Doku, Bericht, Präsentation) Priorität hat und seine vollen 7 Tage braucht.
 - AI-Multiplier aus Sprint 1 (6.4x) und Sprint 2 (13.6x Day-Marathon) gibt Hoffnung dass Sprint 3 trotz Komprimierung schaffbar ist, eventuell sogar vor dem 28.06 fertig.
 - Falls am Halbzeit-Check Sprint 3 nicht im Plan ist: aggressiv Scope-Cut in Reihenfolge SES-4 → APP-5/6 → optionale Polish-Items.
@@ -335,6 +349,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Bericht wirkt oberflächlich, Theorie-Praxis-Verknüpfung leidet.
 
 **Mitigation:**
+
 - NIST-Specs (FIPS 203, 204) als Primärquellen lesen, nicht nur Tutorials.
 - Im Code Kommentare schreiben, die das "Warum" erklären, nicht nur das "Was".
 - Mentor 1:1 #1 für gezielte Klärung nutzen (Liste mit Fragen vorbereiten).
@@ -352,6 +367,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** B5-Kompetenzen nur formell erfüllt, Bewertung-Kriterium 5 (Reflexionstiefe) leidet.
 
 **Mitigation:**
+
 - Sprint-Journal-Templates konsequent ausfüllen.
 - Claude als SM-Unterstützung in den Arbeits-Sessions.
 - Mentor-PM-Experten fragen explizit nach Prozess-Anwendung.
@@ -369,6 +385,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** APP-Stories dauern länger als geschätzt, Sprint 3 wird eng.
 
 **Mitigation:**
+
 - UI absichtlich minimalistisch (Plain RN-Komponenten, keine Design-Library).
 - AI-Multiplier (Claude) für Mobile-Code intensiv nutzen.
 - App-Stories früh in Sprint 1 anschauen (SKL-2 Skeleton), nicht alles auf Sprint 3 schieben.
@@ -396,6 +413,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Probability:** Niedrig | **Impact:** Mittel | **Score:** 2
 
 **Mitigation:**
+
 - Exact Version pinning in requirements.txt (liboqs-python) und Dockerfile (oqs-ossl3-Image-Tag).
 - Lock-Files (uv.lock oder pip-tools) committen.
 
@@ -412,6 +430,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Konsequenz bei Eintritt:** Mobile-Demo nicht auf iPhone möglich, alternativ Custom-Build via EAS (Apple Developer Account nötig) oder Android-Demo.
 
 **Mitigation:**
+
 - Sprint 1 hat SDK 54 als FINAL für gesamten Projekt-Lebenszyklus festgelegt (Memory `project_pqc_expo_sdk.md`).
 - Kein Upgrade auf SDK 55 oder 56 vor 04.07.2026, ausser App Store zieht nach.
 - Im Dockerfile und Setup-Doku ist SDK 54 explizit gepinnt mit Begründung.
@@ -431,6 +450,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Probability:** Mittel | **Impact:** Hoch | **Score:** 6
 
 **Mitigation:**
+
 - Realistische Sprint-Ziele (siehe R-S01 Mitigation).
 - Erfolgserlebnisse einplanen: jeden Sprint mit einem demonstrierbaren Increment abschliessen.
 - Sprint-Retros nutzen für Reflexion über Energie und Fokus (`../sprint_journal/_templates/sprint_retrospective_template.md` hat Achse 3 dafür).
@@ -447,6 +467,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Probability:** Mittel | **Impact:** Mittel | **Score:** 4
 
 **Mitigation:**
+
 - Block-Phasen (Wochenenden, Ferien) bewusst für Projekt-Arbeit reservieren.
 - Wochen-Kapazitäts-Plan im Sprint-Planning explizit machen.
 
@@ -461,6 +482,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 **Probability:** Niedrig | **Impact:** Hoch | **Score:** 3
 
 **Mitigation:**
+
 - Kapazitäts-Reserve in jedem Sprint (20 Prozent).
 - Pufferzeit im Sprint-Plan (Code-Freeze 28.06 ist vor Abgabe 04.07, gibt 5 Tage Puffer).
 

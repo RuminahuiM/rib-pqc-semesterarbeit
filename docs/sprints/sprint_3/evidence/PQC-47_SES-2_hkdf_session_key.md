@@ -25,6 +25,7 @@ als ASCII-Salt. Output ist der 32-Byte AES-256-GCM-Session-Key.
   ``derive_session_key(facade, *, shared_secret, session_id, hkdf_info)``.
   Konvention explizit im Modul-Docstring: HKDF-SHA256 mit
   IKM=shared_secret, info=hkdf_info, salt=session_id-ASCII-bytes, length=32.
+
 - `server/tests/test_session_key_derivation.py` (183 Zeilen): 7 Tests fuer
   Determinismus, Domain-Separation (info, salt, IKM), 32-Byte-Output,
   ASCII-Salt-Konvention, Pass-Through-Sanity.
@@ -83,5 +84,6 @@ Keine Must-/Should-Fixes.
 
 - **PQC-46 SES-1 POST /session/init (8 SP):** Erster Consumer.
   Verkettet: kem_encaps -> derive_session_key -> session_service.create.
+
 - **PQC-26 CRY-6 Client-Side Crypto (5 SP):** App-Side HKDF-SHA256 mit
   identischen Parametern. Cross-Validation-Test gegen den Test-Vektor.

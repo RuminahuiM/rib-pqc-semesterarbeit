@@ -38,6 +38,7 @@ generisch (`ProviderName = "google" | "microsoft"`).
 - Server-Side: `RIB_IDP_PROVIDERS__MICROSOFT__TENANT_ID=<tenant-id>` in
   `.env`. `MicrosoftProviderConfig.tenant_id` komponiert daraus die
   Discovery-URL und Issuer:
+
   - `issuer = https://login.microsoftonline.com/<tenant>/v2.0`
   - `discovery_url = .../<tenant>/v2.0/.well-known/openid-configuration`
 - App-Side: keine Tenant-Info noetig. App ruft generisches
@@ -57,6 +58,7 @@ anderem Tenant -> `invalid_tenant`-Error. Defense-in-Depth.
 - `npx tsc --noEmit` zeigt keine TS-Errors in `src/app/login.tsx` (uebrige
   TS-Errors in der Codebase sind pre-existing aus anderen Files, nicht
   von PQC-61)
+
 - Bestehende Backend-Tests unveraendert: 215 passed
 - Manuelle Verifikation: Microsoft-Button-Klick triggert exakt denselben
   Flow wie Google-Button, nur mit Provider-Parameter `microsoft`
@@ -132,6 +134,7 @@ Sprint-2 ist faktisch fertig. Naechste Schritte:
 
 1. **Sprint-2-Demo** mit User-Aktion (alle Live-Demo-Findings durchziehen
    und Screenshots fuer Bericht sammeln).
+
 2. **Sprint-3 starten** (vermutlich Doku-Polish + Bericht-Vorbereitung +
    F-086 OAuth-App-Type-Switch fuer echte Live-Browser-Demo).
 </thinking>

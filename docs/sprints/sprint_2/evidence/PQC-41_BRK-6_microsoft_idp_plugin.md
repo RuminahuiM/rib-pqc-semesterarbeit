@@ -35,11 +35,14 @@ https://login.microsoftonline.com/<TENANT_ID>/v2.0/.well-known/openid-configurat
 - Studienprojekt-Scope (HEKS-Mitarbeiter-Login) wird klar als Single-Tenant
   modelliert. Multi-Tenant `common` erlaubt jedem Microsoft-Account-Inhaber
   Login, was nicht dem UC-3 entspricht ("Mitarbeiter-Login mit M365").
+
 - Single-Tenant erlaubt zusaetzliche Sicherheit via `tid`-Claim-Check
   (PQC-38 BRK-3 in `MicrosoftIdpPlugin.verify_id_token` Line 118-124):
   Token muss aus unserem konkreten Tenant kommen, sonst `invalid_tenant`-Error.
+
 - Microsoft empfiehlt Single-Tenant fuer Apps die nur einer Organisation
   dienen (Entra ID v2.0 Docs 2026).
+
 - Operationaler Vorteil: `tenant_id` wird via ENV-Var
   `RIB_IDP_PROVIDERS__MICROSOFT__TENANT_ID` konfiguriert, kein Hardcoded-`common`.
 
@@ -91,6 +94,7 @@ Volle Suite weiterhin **212 passed**, 4 erwartete Skips. Keine neuen Tests
 notwendig, weil keine neue Code-Funktionalitaet.
 
 Bestehende Microsoft-Tests gruen:
+
 - `test_microsoft_plugin_satisfies_idp_protocol`
 - `test_microsoft_plugin_properties` (tenant_id, discovery_url, issuer)
 - `test_microsoft_claim_mapper_happy_path_with_oid`
@@ -118,6 +122,7 @@ Keine Must-Fix. 1 Finding:
 
 - Story-Points: 5 (Original-Schaetzung; Realitaet stark reduziert durch
   Plugin-Architektur-Vorarbeit)
+
 - Tatsaechliche Zeit: tba (User entscheidet beim Done)
 - AI-Multiplier-Beobachtung: 5 SP wurden auf reine Doku reduziert. Bestaetigt
   das Plugin-Architektur-Design: marginalkosten fuer neue Provider gegen Null.

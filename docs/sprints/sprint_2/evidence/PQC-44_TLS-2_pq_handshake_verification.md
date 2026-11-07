@@ -34,8 +34,10 @@ der hybriden Post-Quantum-Group X25519MLKEM768 anbietet. Beweis fuer NFR-Sec-1.
 - pqc-nginx-Container hat aber bereits OpenSSL 3.5 + oqs-provider durch
   den Multi-Stage-Build aus PQC-18 INF-4. Damit ist der Container selbst
   ein PQ-faehiger TLS-Client.
+
 - `docker exec pqc-nginx ...` nutzt die vorhandene Infrastruktur ohne
   weitere Tools installieren zu muessen.
+
 - Funktional equivalent zu oqs-curl: beide setzen TLS-NamedGroup
   X25519MLKEM768 explizit.
 
@@ -62,6 +64,7 @@ Keine neuen Unit-Tests (Story ist Skript + Doku). Bestehende Test-Suite
 weiterhin **215 passed**, 4 erwartete Skips. Ruff-Check unveraendert.
 
 Skript-Verifikation:
+
 - `bash -n scripts/verify_pq_tls.sh` -> syntax OK
 - Dry-Run im Sandbox ohne docker-Daemon nicht moeglich, aber Skript-Logik
   ist defensiv gegen fehlenden Container (gibt klare Fehlermeldung mit

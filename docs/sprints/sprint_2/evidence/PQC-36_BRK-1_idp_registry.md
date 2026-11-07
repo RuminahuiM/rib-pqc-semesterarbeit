@@ -17,10 +17,13 @@ Implementation).
 - **AC-1:** Registry-API erlaubt register und get pro Provider-Name.
 - **AC-2:** Plugin-Schnittstelle definiert (Discovery-URL, Client-ID, Scopes,
   claim_mapper, verify_id_token).
+
 - **AC-3:** Bootstrap aus Pydantic-Settings registriert nur enabled=True
   Provider.
+
 - **AC-4:** Fail-Fast: Doppelregistrierung und Unbekannter-Provider werfen
   dedizierte Errors.
+
 - **AC-5:** Pattern ist erweiterbar (neue Provider wie Apple in STR-2 PQC-76
   ohne Eingriff in den Registry-Core).
 
@@ -57,15 +60,20 @@ Alle ACs erfuellt.
 Suite: `tests/test_idp_registry.py`, 21 Tests, alle gruen.
 
 Test-Cluster:
+
 - IdpRegistry Happy-Path: register, get, supported, __contains__, sortierung.
 - Fehlerfaelle: Duplicate, Unknown, Fehlertext listet registrierte Provider,
   RegistryError-Base-Hierarchie.
+
 - Protocol-Konformitaet: isinstance-Check fuer beide Plugins gegen
   IdpProvider Protocol.
+
 - Plugin-Properties: discovery_url, client_id, scopes, issuer, tenant_id
   korrekt aus Config.
+
 - Stub-Verhalten: claim_mapper und verify_id_token werfen NotImplementedError
   mit Story-Hint (PQC-38 / PQC-39).
+
 - init_idp_registry: beide enabled, einer disabled, beide disabled, Microsoft
   tenant_id-Propagation.
 
@@ -83,8 +91,10 @@ Severity-Stufen). Erkenntnisse aus WebSearch fuer aktuelle 2026-Patterns:
 
 - OIDC-Discovery via `.well-known/openid-configuration` ist Standard, von
   uns bereits abgebildet.
+
 - ID-Token-Validierung muss iss + aud + Signature pruefen, voll-Implementation
   in PQC-38 BRK-3 vorgesehen.
+
 - Multi-Provider-Broker normalisiert Profile auf einheitliches Schema; bei uns
   in PQC-39 BRK-4 vorgesehen.
 
@@ -116,6 +126,7 @@ verwendet).
 - Story-Points: 5
 - Tatsaechliche Zeit: **30 Minuten** (Implementation + Tests + Review +
   Evidence). Worklog in Jira eingetragen.
+
 - AI-Multiplier-Beobachtung: Pattern-Replikation aus PQC-21 CRY-1 (crypto/
   Modul) hat Implementations-Zeit massiv verkuerzt. 5 SP in 0.5h = sehr
   hoher Multiplier, getrieben durch Strukturanalogie zur bestehenden

@@ -22,6 +22,7 @@ TLS-1.3+PQ-Endpoint extern erreichbar, intern bleibt HTTP-Routing.
 
 - **Catch-all `location /` umgestellt** von 404-Hinweis-Response auf
   `proxy_pass http://auth_service` (genau wie Port-80-Block aus PQC-17).
+
 - **X-Forwarded-Header erweitert:**
   - `X-Real-IP $remote_addr` (echte Client-IP)
   - `X-Forwarded-For $proxy_add_x_forwarded_for` (Hop-Liste)
@@ -32,6 +33,7 @@ TLS-1.3+PQ-Endpoint extern erreichbar, intern bleibt HTTP-Routing.
   - `X-TLS-Cipher $ssl_cipher`
 - **`/pqc-test` Endpoint bleibt** als nginx-internal TLS-Smoke (vorrangiger
   Match-Block, nicht durchgereicht).
+
 - **Bisheriger TLS-only `/health`-Block entfernt:** ueber proxy_pass laeuft
   jetzt der echte FastAPI-`/health`-Endpoint aus PQC-19 SKL-1. Konsistent
   mit Port-80-Verhalten.

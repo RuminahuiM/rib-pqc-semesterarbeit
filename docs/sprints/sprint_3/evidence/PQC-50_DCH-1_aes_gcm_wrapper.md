@@ -26,6 +26,7 @@ Asymmetrie behoben und dezidierte DCH-1-Tests ergaenzt.
 ## In PQC-50 implementiert
 
 **Server-Aenderungen:**
+
 - `server/crypto/facade.py`: Neue Static-Methode `CryptoFacade.aead_random_nonce()` (17 Zeilen incl. Docstring) als symmetrisches Pendant zur App-Side `randomNonce()`. Verwendet `secrets.token_bytes(12)`. Dokumentiert NIST SP 800-38D Section 8.2-Konvention (F-092) explizit.
 - `server/tests/test_facade.py`: 4 neue dezidierte DCH-1-Tests:
   - `test_dch1_aead_random_nonce_returns_12_bytes` (AC-1)
@@ -34,6 +35,7 @@ Asymmetrie behoben und dezidierte DCH-1-Tests ergaenzt.
   - `test_dch1_aead_decrypt_tag_mismatch_raises_exception` (AC-2, Channel-Layer-Fokus)
 
 **App-Aenderungen:**
+
 - `app/src/crypto/__tests__/cipher.test.ts`: 2 neue dezidierte DCH-1-Tests am Ende der Datei:
   - `random-length Plaintext (1..1024 byte) roundtrip` (AC-3)
   - `randomNonce + Server-konformer AAD-Roundtrip (session_id als bytes)` (Vorlaeufer fuer DCH-2/DCH-3-Konvention)

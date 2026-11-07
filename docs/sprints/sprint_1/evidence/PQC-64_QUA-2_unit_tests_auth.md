@@ -26,6 +26,7 @@ Coverage gegen den 80%-Threshold.
 ## Auth-Module-Definition (Senior-Decision)
 
 Coverage-Scope umfasst (Option A aus Story-Start):
+
 - `auth/` (Argon2id-Hasher, dummy_verify)
 - `routers/auth.py` (Login-Endpoint mit Rate-Limit + Enumeration-Schutz)
 - `db/repositories/user_repository.py` (User-CRUD)
@@ -66,6 +67,7 @@ Login-Endpunkt-Internals (Zeilen 157-198) ab. Erwartete Coverage in Docker:
 ### test_password.py (13 Tests, AC-1)
 
 Direkte Argon2id-Tests gegen `auth.password.PasswordHasher`:
+
 - `test_hash_returns_argon2id_formatted_string`: Hash-Format-Validierung
 - `test_verify_correct_password`: Round-Trip mit korrektem Passwort
 - `test_verify_wrong_password`: Reject bei falschem Passwort
@@ -84,6 +86,7 @@ Direkte Argon2id-Tests gegen `auth.password.PasswordHasher`:
 
 Integration-Tests gegen `routers.auth.local_login` mit echter Argon2id +
 TestClient + Mini-FastAPI-App. Sandbox-skipped weil liboqs fehlt:
+
 - `test_login_success_returns_broker_token` (AC-2)
 - `test_login_token_can_be_verified` (AC-2, End-to-End mit echter ML-DSA-65-Signatur)
 - `test_login_email_case_insensitive` (AC-2 Edge-Case)
@@ -97,6 +100,7 @@ TestClient + Mini-FastAPI-App. Sandbox-skipped weil liboqs fehlt:
 ### test_user_repository.py (22 Tests, AC-1 indirekt + AC-2 Support)
 
 User-Persistierung gegen async SQLite via SQLAlchemy:
+
 - CRUD: `test_create_user_with_email_and_local`, `test_create_user_federated`, `test_find_by_email_returns_user`, `test_find_by_email_returns_none_unknown`
 - Constraint-Validation: `test_create_user_duplicate_email_raises`, `test_invalid_user_data_is_user_repository_error`
 - Email-Normalisierung: `test_find_by_email_is_case_insensitive`, `test_email_lowercased_on_create`

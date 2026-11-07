@@ -30,10 +30,13 @@ code_verifier kommt aus Redis (One-Shot Replay-Schutz fuer beide atomar).
 
 - BFF-Pattern (RFC 9700 BCP 2026): Server ist Confidential Client mit
   client_secret und kontrolliert die ganze OAuth-Flow-Mechanik.
+
 - Server-managed State + PKCE ist Industry-Standard fuer BFF-Setups
   (Auth0/Cognito/Keycloak nutzen alle diesen Ansatz).
+
 - 256 bit Entropie via `secrets.token_urlsafe(32)` ist deutlich mehr als
   AC-1's 128 bit-Vorgabe.
+
 - App wird einfacher: kein PKCE-Memory-Management app-side, App muss nur
   state lokal merken fuer den Callback-Echo.
 
@@ -47,6 +50,7 @@ Im Bericht: Cross-Reference zur Senior-Decision aus PQC-37 + Begruendung mit BFF
   `code_verifier: str` (43-128 chars per RFC 7636). `OidcStateService.create()`
   nimmt jetzt `(provider, code_verifier)` als Pflichtparameter und persistiert
   beides atomar in Redis. `consume()` liefert beides zurueck.
+
 - `routers/auth_federated.py`:
   - Neue Request-Klasse `AuthorizeStartRequest` mit `code_verifier`-Body-Param.
   - `start_authorize` Endpoint: nimmt `code_verifier` vom App, persistiert ihn
@@ -61,10 +65,13 @@ Im Bericht: Cross-Reference zur Senior-Decision aus PQC-37 + Begruendung mit BFF
 1. **Atomarer Replay-Schutz:** state + code_verifier werden zusammen via
    Redis-DEL geloescht. Zweiter Callback-Versuch kann weder state noch
    verifier wiederverwenden.
+
 2. **Centralized Audit-Log:** Server hat zentrales Logging ueber alle aktiven
    PKCE-Sessions (oidc_state.create/consume Events).
+
 3. **App-Simplifikation:** PQC-60 App-Code wird einfacher - kein expo-crypto
    PKCE-Management noetig, nur State-Echo.
+
 4. **Server-side code_challenge-Berechnung:** App kann nicht versehentlich
    eine andere challenge zum IdP schicken als der Verifier hergibt.
 
@@ -78,6 +85,7 @@ Im Bericht: Cross-Reference zur Senior-Decision aus PQC-37 + Begruendung mit BFF
 state consumed, code_verifier wird atomar mit state ge-DEL-ed).
 
 Bestehende Tests angepasst:
+
 - `OidcStateService.create()`-Tests nehmen jetzt code_verifier-Param
 - Router-Tests: Authorize-Endpoint mit JSON-Body, Callback ohne code_verifier
 - `_MockPlugin.verify_id_token`: ClassVar fuer scopes
@@ -120,6 +128,7 @@ deferred_findings.md als resolved markiert werden.
 ## Folgestories
 
 End-to-End-OIDC-Server-Pfad nach PQC-42 vollstaendig:
+
 - BRK-1 + BRK-7 (State+PKCE-Persistence)
 - BRK-2 (Code-Flow + PKCE-Echo)
 - BRK-3 (ID-Token-Verify)

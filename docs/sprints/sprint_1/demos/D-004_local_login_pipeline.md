@@ -106,6 +106,7 @@ Mit D-004 ist das **Sprint-1-Sprint-Goal funktional erreicht**:
 > "Als User kann ich mich per Email+Passwort gegen den Auth-Service authentifizieren und bekomme einen ML-DSA-65-signierten Broker-Token zurueck, der spaeter von der App im Authorization-Header gegen geschuetzte Endpoints verwendet werden kann."
 
 Bewiesen sind:
+
 - ML-DSA-65-Signatur (FIPS 204) als Token-Auth (post-quantum-sicher)
 - Argon2id-Password-Hashing (m=64MB, t=3, p=4, Story-AC-konform)
 - Anti-Enumeration-Pattern (constant-time, identische 401-Responses)

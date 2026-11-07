@@ -25,6 +25,7 @@ Sec 4. Foundation fuer SES-1 (Session-Init, PQC-46) und DCH-2
 - `server/services/session_service.py` (282 Zeilen): SessionService-Klasse,
   SessionRecord-Pydantic, SessionNotFoundError, _RedisAsyncProtocol fuer
   Test-Mocking. Pattern analog OidcStateService aus PQC-37.
+
 - `server/tests/test_session_service.py` (192 Zeilen): 12 fakeredis-Tests.
 
 **Aenderungen:**
@@ -32,9 +33,11 @@ Sec 4. Foundation fuer SES-1 (Session-Init, PQC-46) und DCH-2
 - `server/config.py`: SessionConfig hinzugefuegt mit ttl_seconds (Default 900),
   session_redis_db (Default 3), hkdf_info (Default b"app-session-v1" fuer
   SES-2). In Settings als `session`-Feld eingebunden.
+
 - `server/main.py`: SessionService-Import und Lifespan-Wiring. Eigener
   Redis-Client mit `settings.session.session_redis_db`. `app.state.session_service`
   fuer Consumer SES-1/DCH-2 verfuegbar.
+
 - `docs/wire_format.md`: Sec 4 Session-Record auf Design 5.2 + Implementation
   aligned (expires_at statt auth_method, unix-ts statt ISO). Doku-Version 0.2.
 
@@ -97,8 +100,10 @@ Keine offenen Must-/Should-Fixes.
 - **PQC-47 SES-2 HKDF-Session-Key:** nutzt `facade.hkdf` mit `settings.session.hkdf_info`
   und `session_id` als salt. Erzeugt den 32-Byte session_key, der dann via
   `SessionService.create()` persistiert wird.
+
 - **PQC-46 SES-1 POST /session/init (L=8):** orchestriert KEM-Encaps +
   HKDF + SessionService.create + Response.
+
 - **PQC-51 DCH-2 Header-basiertes Session-Routing:** Middleware liest
   `X-Session-Id`, ruft `SessionService.get`, mapped SessionNotFoundError
   auf 401 session_expired.
@@ -114,11 +119,14 @@ braucht die session_id als HKDF-Salt VOR der Key-Ableitung, aber
 `create()` generiert die session_id intern, NACH dem Key-Aufruf.
 
 Loesung in PQC-46:
+
 - `SessionService.generate_session_id()` als oeffentlicher Static-Helper
   ergaenzt (CSPRNG-16-Byte urlsafe-base64).
+
 - `SessionService.create_with_id(session_id, ...)` als alternativer
   Persist-Path ergaenzt (Aufrufer hat session_id bereits, z.B. weil
   als HKDF-Salt verwendet).
+
 - F-102 Refactor: gemeinsamer interner Helper `_persist_record()` der
   von `create()` und `create_with_id()` aufgerufen wird, kein Code-
   Duplikat mehr.

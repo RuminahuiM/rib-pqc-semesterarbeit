@@ -12,6 +12,7 @@ iPhone statt einem Client-Script. Beide PQ-Schichten aktiv:
 
 - **Application-Layer-PQ:** ML-KEM-768-Session via `@noble/post-quantum`
   in der App, AES-256-GCM-verschluesselter `/api/profile`-Call.
+
 - **Transport-Layer:** klassisches TLS zwischen iPhone und Server
   (R-T08: iOS-System-TLS unterstuetzt X25519MLKEM768 noch nicht),
   PQ-TLS separat via Browser/openssl nachgewiesen (D-005/D-007).
@@ -23,8 +24,10 @@ Ablauf in der App:
 3. Home-Screen: Status-Karte sichtbar, Kanal-Indikator amber (noch keine Session).
 4. Profil oeffnen: App etabliert PQ-Session (ML-KEM-768 KeyGen, POST
    /session/init, Decaps plus HKDF via SessionContext/secureClient).
+
 5. Profil-Daten erscheinen: Response wurde AES-256-GCM-verschluesselt
    uebertragen und in der App entschluesselt.
+
 6. Zurueck auf Home: Kanal-Indikator gruen mit "ML-KEM-768" plus Session-ID.
 
 ## Voraussetzungen und Befehlsfolge
@@ -54,6 +57,7 @@ App und Server muessen im selben Netz sein (iPhone-Hotspot, IP in
 - Login liefert Broker-Token (Home-Screen erreichbar).
 - Erster Profil-Aufruf: `POST /session/init` im Server-Log, danach
   `POST /api/profile` mit `X-Session-Id`/`X-Nonce`-Headern.
+
 - Profil-JSON wird in der App angezeigt (entschluesselt).
 - Kanal-Status gruen: `ML-KEM-768` plus Session-ID sichtbar.
 
@@ -63,4 +67,5 @@ App und Server muessen im selben Netz sein (iPhone-Hotspot, IP in
   (PQC-67 QUA-5, `server/tests/test_integration_e2e_flow.py`): exakt
   dieselbe Kette inklusive Replay- und Isolation-Negativfaellen,
   420 Tests gruen im Container-Run vom 07.07.2026.
+
 - Live-Durchlauf am Kolloquium 08.07.2026 erfolgreich.

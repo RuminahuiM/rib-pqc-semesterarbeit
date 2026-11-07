@@ -56,8 +56,10 @@ roh weitergereicht wurde, ab jetzt trusted. Schliesst F-065.
 erwartete Skips (liboqs-Sandbox). Ruff `All checks passed`.
 
 Test-Cluster:
+
 - `test_oidc_jwks_service.py`: Fetch, Cache, Force-Refresh, Invalidate,
   HTTP-Error, Invalid-JSON, Missing-Keys, Network-Error, Constructor.
+
 - `test_id_token_verifier.py`: Happy, Sig-Tamper, Expired, Disallowed-Alg,
   Invalid-Issuer, Invalid-Audience, Unknown-Kid+Force-Refresh, JWKS-Fetch-
   Fail, Malformed-Token, Constructor. Inkl. echter RS256-Token-Generation

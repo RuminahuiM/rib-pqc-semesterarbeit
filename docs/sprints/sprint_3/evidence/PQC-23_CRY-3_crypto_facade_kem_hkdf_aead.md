@@ -27,6 +27,7 @@ plus HKDF-SHA256 und AES-256-GCM aus cryptography.hazmat.
   ersetzt (kem_keygen/encaps/decaps + supported_signature_algorithms behalten,
   neu hkdf, aead_encrypt, aead_decrypt, supported_kem_algorithms, is_kem_supported).
   Neue `AeadDecryptError`-Klasse als Wrapper um `cryptography.exceptions.InvalidTag`.
+
 - `server/tests/test_facade.py`: 22 neue Tests fuer KEM/HKDF/AEAD/Negotiation
   plus 1 Integration-Pipeline-Test (KEM -> HKDF -> AEAD End-to-End).
 
@@ -36,6 +37,7 @@ plus HKDF-SHA256 und AES-256-GCM aus cryptography.hazmat.
 - DCH-1 nutzt `facade.aead_encrypt(session_key, nonce, plaintext, aad=...)` mit
   frischer 12-Byte-Nonce pro Request (CSPRNG, NIST SP 800-38D Section 8.2 fordert
   no-reuse). Replay-Schutz via Nonce-Tracking ist DCH-4.
+
 - SES-4 nutzt `facade.supported_kem_algorithms()` im 406-Response Body.
 
 ## Architektur-Entscheidungen
@@ -60,6 +62,7 @@ konkateniert Tag (16B) hinten an ciphertext. Aufrufer sehen das als single
 - `pytest --no-cov -q` 215 passed, 5 skipped (liboqs-Tests + facade-Tests
   skipped in Sandbox, etabliertes Pattern). Im Docker mit liboqs laufen die
   30 facade-Tests voll.
+
 - `ruff check crypto/facade.py tests/test_facade.py` All checks passed.
 - `ruff format --check ...` 2 files already formatted.
 
@@ -103,8 +106,10 @@ Keine Must-Fixes, kein Should-Fix-in-Story.
 
 - **PQC-27 CRY-7 Algorithmus-Identifier:** Token-Header + Session-Record
   enthalten ``alg``/``kem_alg``. Nutzt die Facade-Negotiation-Methoden.
+
 - **PQC-47 SES-2 HKDF-Session-Key:** erster konkreter Konsument von
   `facade.hkdf` mit SES-2-Konvention.
+
 - **PQC-46 SES-1 POST /session/init:** Konsument von `facade.kem_encaps`.
 - **PQC-50 DCH-1 AES-GCM Wrapper:** thin layer auf `facade.aead_encrypt`/
   `aead_decrypt`. Hauptaufgabe: nonce-Generierung sauber kapseln (F-092).

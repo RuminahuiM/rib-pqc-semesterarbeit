@@ -86,8 +86,10 @@ Drei wichtige Belege in diesem Auszug:
 
 1. Strukturiertes JSON-Logging via structlog mit konsistenten Feldern
    (`event`, `level`, `timestamp`, `app`, `version`, `env`).
+
 2. Uvicorn- und stdlib-Logs werden ueber die ProcessorFormatter-Bridge auch in
    JSON umgesetzt ("Application startup complete." und Request-Logs).
+
 3. Healthcheck-Calls von beiden Seiten erkennbar: `127.0.0.1` ist der eigene
    Compose-Healthcheck im auth-service-Container, `172.18.0.4` ist der
    nginx-Healthcheck der durch den Proxy laeuft.
@@ -177,5 +179,6 @@ getrackt.
   fuer SEC-1 bis SEC-5)
 
 **Nicht-funktionale Auswirkung auf PQC-19:**
+
 - Container muss erneut gebaut werden, damit die neue CMD `python main.py`
   greift. Funktional gleiches Verhalten, nur saubere Setting-zu-Runtime-Bruecke.

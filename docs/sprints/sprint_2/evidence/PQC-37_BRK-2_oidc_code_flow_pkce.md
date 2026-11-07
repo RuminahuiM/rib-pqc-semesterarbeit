@@ -77,15 +77,19 @@ Neue Tests in BRK-2: **47** (7+11+14+15). Volle Suite **172 passed** (vorher
 125), 4 erwartete Skips (liboqs-Sandbox). Ruff `All checks passed`.
 
 Test-Cluster:
+
 - `test_oidc_state_service.py`: Happy create+consume, One-Shot Replay-Schutz,
   Unknown-State, TTL-Expiry, Entropie-Sanity, Constructor-Validation,
   Malformed-Payload.
+
 - `test_oidc_exchange_service.py`: Discovery happy + cache + http-error +
   invalid-json + missing-token-endpoint + network-error. Exchange happy +
   form-payload + 400 + 500 + missing-id-token + malformed + network-error.
+
 - `test_auth_federated_router.py`: Authorize happy + PKCE + 404 + 422-Pattern
   + 502-Discovery. Callback happy + One-Shot + State-Mismatch + Provider-
   Mismatch + 404 + 400-IdP-Error + 502-Discovery + Validation.
+
 - `test_idp_registry.py`: +7 F-058 Tests (Google ohne ID/Secret/URI, MS
   ohne tenant_id, all-missing-listed, IdpConfigError-Base, Disabled-no-check).
 
@@ -115,6 +119,7 @@ Keine Must-Fixes. In-Story-Fix: F-058 (war Should). Rest via Tier 2 in
 - `python -c "from main import create_app; create_app()"` -> Imports + Route
   -Registration funktionieren (`/auth/federated/{provider}/authorize` und
   `/auth/federated/{provider}/callback` registriert).
+
 - F-058-Verifikation: Manueller Test mit `enabled=true` ohne client_secret
   -> `IdpConfigError` bei Service-Start.
 
@@ -123,6 +128,7 @@ Keine Must-Fixes. In-Story-Fix: F-058 (war Should). Rest via Tier 2 in
 - Story-Points: 8
 - Tatsaechliche Zeit: noch zu vermerken (User entscheidet, sofern abweichend
   vom Standard).
+
 - AI-Multiplier-Beobachtung: 8 SP in einer Session ist deutlich oberhalb
   des historischen 4-6x-Multipliers. Pattern-Replikation aus
   token_service.py + crypto/registry.py hat erneut massiv beschleunigt.
@@ -134,11 +140,15 @@ Keine Must-Fixes. In-Story-Fix: F-058 (war Should). Rest via Tier 2 in
 - **PQC-42 BRK-7** (Hardening): Extrahiert State-Service in eigenes Modul
   (ist bereits getrennt!), ergaenzt Tests fuer TTL-Expiry mit Real-Time,
   ggf. F-063 Defense-in-Depth code_challenge-Pruefung.
+
 - **PQC-38 BRK-3** (ID-Token-Verify): voll-implementiert `verify_id_token`
   der Plugins (JWKS-Fetch, RS256-Signature-Pruefung, iss+aud+exp).
+
 - **PQC-39 BRK-4** (Identity-Normalisierung): voll-implementiert
   `claim_mapper` der Plugins.
+
 - **PQC-40 BRK-5** + **PQC-41 BRK-6**: Vollausbau Google + Microsoft, wenn
   BRK-3 + BRK-4 fertig sind.
+
 - **PQC-60 APP-7** + **PQC-61 APP-8**: App-Seite startet den Authorize-Flow
   ueber unseren Endpoint, postet zum Callback.
