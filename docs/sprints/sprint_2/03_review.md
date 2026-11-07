@@ -22,7 +22,7 @@ Sprint-Goal ist vollständig erreicht für den Browser-zu-Backend-Pfad. Alle 13 
 
 **Verzögerungs-Kontext (Transparenz):**
 
-Der geplante Sprint-Zeitraum (01.06 bis 14.06) konnte wegen eines Problems bei meiner Arbeit (HEKS) nicht für effektive Projekt-Implementation genutzt werden. Statt den Sprint mit Carry-Over in Sprint 3 zu schieben oder das Sprint-Goal zu reduzieren, habe ich den Sprint als Day-Marathon am 17.06.2026 nachgeholt.
+Der geplante Sprint-Zeitraum (01.06 bis 14.06) konnte wegen eines Problems bei meiner Arbeit nicht für effektive Projekt-Implementation genutzt werden. Statt den Sprint mit Carry-Over in Sprint 3 zu schieben oder das Sprint-Goal zu reduzieren, habe ich den Sprint als Day-Marathon am 17.06.2026 nachgeholt.
 
 **Selbstkritischer Hinweis zur Mentor-Kommunikation:** Die Mentoren wurden erst nach Sprint-2-Abschluss informiert, nicht während der Verzögerung. Damit hatten sie seit dem letzten Zwischengespräch (01.06) kein Status-Update. Das war ein Fehler. Korrekt wäre gewesen den Mentoren während der Verzögerungs-Phase (ca. 01.06 bis 16.06) eine kurze Info zu geben, damit sie nicht im Unklaren über den Projekt-Stand sind. Diese Lesson fliesst in die Sprint-3-Mentor-Kommunikations-Strategie ein.
 
@@ -115,7 +115,7 @@ Mit den beobachteten AI-Multipliern aus Sprint 1 (6.4x) und Sprint 2 (13.6x im M
 | Risk-ID | Was ist passiert? | Reaktion |
 |---|---|---|
 | R-S01 (Sprint-Kapazität) | Implementation komplett im geplanten Sprint-Zeitraum 01.06 bis 14.06 nicht möglich wegen externem Arbeit-Problem. | Day-Marathon-Adaption am 17.06, alle 13 Stories nachgeholt. Mentor-Update vor Marathon verschickt. |
-| R-P02 (Berufliche Belastungen HEKS) | Eingetreten. Hat zu Sprint-2-Verzögerung geführt. | Adaption durch Day-Marathon. Risk-Score neu bewerten. |
+| R-P02 (Berufliche Belastungen) | Eingetreten. Hat zu Sprint-2-Verzögerung geführt. | Adaption durch Day-Marathon. Risk-Score neu bewerten. |
 
 ### 5.2 Geänderte Risiko-Bewertung
 
@@ -124,7 +124,7 @@ Mit den beobachteten AI-Multipliern aus Sprint 1 (6.4x) und Sprint 2 (13.6x im M
 | R-T04 (OIDC-Provider-Setup) | Score 6 Active | Mitigated (17.06) | Single-Tenant-Setup bei Microsoft vermeidet App-Approval-Wartezeit. Google-Setup straightforward. |
 | R-S05 (Externe OAuth-Abhängigkeiten) | Score 4 Active | Mitigated (17.06) | Single-Tenant-Wahl hat Wartezeit komplett eliminiert. |
 | R-T07 (Expo Deep-Link) | Score 4 Active | Mitigated (17.06) | Deep-Link via expo-auth-session funktional verifiziert. Fallback-Pfad nicht nötig. |
-| R-P02 (HEKS-Belastung) | Score 4 Active | Score 6 (hochgestuft) | Real eingetreten in Sprint 2. Sprint-3-Risiko erneut zu beobachten. |
+| R-P02 (berufliche Belastung) | Score 4 Active | Score 6 (hochgestuft) | Real eingetreten in Sprint 2. Sprint-3-Risiko erneut zu beobachten. |
 | R-S01 (Sprint-Kapazität) | Score 6 Active | Score 6 Active (unverändert) | Sprint 2 wurde im Day-Marathon nachgeholt, also Sprint-Goal erreicht. Aber strukturell ist die Kapazität bei externen Belastungen weiter ein Risiko. |
 
 ### 5.3 Neue Risiken (in diesem Sprint identifiziert)
@@ -136,7 +136,7 @@ Mit den beobachteten AI-Multipliern aus Sprint 1 (6.4x) und Sprint 2 (13.6x im M
 
 ### 5.4 Active-Watch-Status für Sprint 3
 
-- [x] R-P02 (HEKS-Belastung) auf Score 6 hochgestuft. Weiter beobachten ob Sprint 3 ebenfalls von Arbeit-Problemen betroffen ist.
+- [x] R-P02 (berufliche Belastung) auf Score 6 hochgestuft. Weiter beobachten ob Sprint 3 ebenfalls von Arbeit-Problemen betroffen ist.
 - [x] R-S06 (Komprimierung) neu. Sprint-3-Planning realistisch halten, Sprint 4 unantastbar.
 - [x] R-T08 (Mobile-PQC-TLS-Limitation) neu. Im Schlussbericht als ehrlicher Befund.
 - [x] R-S04 (Doku-Zeit Sprint 4) jetzt prominent. Sprint 4 darf nicht weiter gekürzt werden.

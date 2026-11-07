@@ -32,7 +32,7 @@ https://login.microsoftonline.com/<TENANT_ID>/v2.0/.well-known/openid-configurat
 
 **Begruendung der Abweichung (Senior-Decision aus PQC-84 BRK-0):**
 
-- Studienprojekt-Scope (HEKS-Mitarbeiter-Login) wird klar als Single-Tenant
+- Studienprojekt-Scope (Mitarbeiter-Login) wird klar als Single-Tenant
   modelliert. Multi-Tenant `common` erlaubt jedem Microsoft-Account-Inhaber
   Login, was nicht dem UC-3 entspricht ("Mitarbeiter-Login mit M365").
 

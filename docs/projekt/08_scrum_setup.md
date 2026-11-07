@@ -51,7 +51,7 @@ Dieses Dokument gilt ab dem 17.05.2026 für den restlichen Verlauf der Semestera
 
 ### 2.1 Ausgangslage
 
-Die Semesterarbeit ist als Einzelarbeit eingereicht und genehmigt. Es gibt keinen Auftraggeber, kein Stakeholder-Komitee, keine Mitstudierenden im selben Projekt. Der Lehrbetrieb HEKS ist nicht Auftraggeber dieser Arbeit, die Arbeit ist ein TBZ-Schul-Projekt.
+Die Semesterarbeit ist als Einzelarbeit eingereicht und genehmigt. Es gibt keinen Auftraggeber, kein Stakeholder-Komitee, keine Mitstudierenden im selben Projekt. Der Arbeitgeber ist nicht Auftraggeber dieser Arbeit, die Arbeit ist ein TBZ-Schul-Projekt.
 
 Daraus folgt: Es existiert kein klassisches Scrum-Team. Alle drei Verantwortlichkeiten (Developer, Product Owner, Scrum Master) liegen physisch bei einer einzigen Person, dem Studierenden. Diese Realität wird in dieser Arbeit ehrlich dokumentiert, statt sie hinter konstruierten Rollen-Wechseln zu verstecken. **Stakeholder existieren aber sehr wohl**: die beiden TBZ-Experten (Fach- und Projektmanagement) sowie die Lehrgangsleitung. Sie sind nicht Teil des Scrum-Teams, aber liefern externe Inspektion und Feedback.
 

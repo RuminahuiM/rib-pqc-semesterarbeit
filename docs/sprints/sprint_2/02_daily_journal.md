@@ -11,7 +11,7 @@
 
 ## 2026-06-01 bis 2026-06-16 (Sprint-2-Verzögerung) — retrospektiv dokumentiert
 
-**Was passiert ist:** Im geplanten Sprint-2-Zeitraum (01.06 bis 14.06) konnte ich kein effektives Projekt-Arbeit leisten wegen eines Problems bei meiner Arbeit (HEKS). Die Implementation-Arbeit kam nicht zustande. Das ursprünglich geplante Sprint-2-Backlog (BRK plus TLS plus Federation-Mobile, 56 SP in 5 geplanten Arbeitstagen) wurde nicht angegangen.
+**Was passiert ist:** Im geplanten Sprint-2-Zeitraum (01.06 bis 14.06) konnte ich kein effektives Projekt-Arbeit leisten wegen eines Problems bei meiner Arbeit. Die Implementation-Arbeit kam nicht zustande. Das ursprünglich geplante Sprint-2-Backlog (BRK plus TLS plus Federation-Mobile, 56 SP in 5 geplanten Arbeitstagen) wurde nicht angegangen.
 
 **Adaption (Empirismus-Säule):** Statt den Sprint mit massivem Carry-Over in Sprint 3 zu schieben oder das Sprint-Goal zu reduzieren, habe ich entschieden den Sprint nachzuholen sobald die Arbeit-Situation wieder Kapazität gibt. Die Mentoren wurden über die Verzögerung in einem Zwischenupdate informiert (Transparenz-Prinzip, nicht verbergen).
 

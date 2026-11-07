@@ -21,7 +21,7 @@
 
 **Was hat das Erreichen behindert?**
 
-- **Arbeit-Problem bei HEKS.** Hat den geplanten Sprint-Zeitraum komplett unmöglich gemacht. Die Adaption hat funktioniert, aber strukturell ist meine Kapazität bei externen Belastungen fragil.
+- **Arbeit-Problem beim Arbeitgeber.** Hat den geplanten Sprint-Zeitraum komplett unmöglich gemacht. Die Adaption hat funktioniert, aber strukturell ist meine Kapazität bei externen Belastungen fragil.
 - **Mobile-PQC-TLS-Limitation (R-T08) zu spät entdeckt.** Beim Sprint-Planning war ich davon ausgegangen dass Mobile-Client gegen Backend über PQC-TLS funktioniert. Erst während der Implementation wurde klar dass System-TLS-Stacks ML-KEM nicht unterstützen. Damit ist das Sprint-Goal für den reinen App-Pfad nur theoretisch erfüllt. Beim Sprint-Planning wäre eine vollständigere Recherche zu Mobile-Client-TLS-Capabilities sinnvoll gewesen.
 
 ---

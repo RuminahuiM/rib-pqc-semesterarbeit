@@ -63,7 +63,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 | R-K03 | React Native / Expo Spezifika nicht vertraut | Wissen | Mittel | Mittel | 4 | Active |
 | R-S05 | Externe Abhängigkeiten (OAuth-App-Setup) verzögern Sprint 2 | Termin | Mittel | Mittel | 4 | Active |
 | R-K02 | ScrumBut-Falle in Solo-Anwendung | Wissen | Mittel | Mittel | 4 | Active |
-| R-P02 | Berufliche und private Belastungen (HEKS-Arbeit) | Persönlich | Mittel | Mittel | 4 | Active |
+| R-P02 | Berufliche und private Belastungen (Arbeit) | Persönlich | Mittel | Mittel | 4 | Active |
 | R-S02 | Sprint-0-Verzug (bereits eingetreten) | Termin | Eingetreten | Mittel | --- | Mitigated |
 | R-T05 | nginx + oqs-provider TLS-Setup bricht | Technisch | Niedrig | Mittel | 2 | Monitor |
 | R-S03 | Mentor-Termin-Scheduling (Termin 2 und 3 offen) | Termin | Mittel | Niedrig | 2 | Monitor |
@@ -320,7 +320,7 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 
 ### R-S06: Sprint-3-Komprimierung wegen Sprint-2-Verzögerung
 
-**Beschreibung:** Sprint 2 wurde wegen externem Arbeit-Problem (HEKS) während des geplanten Zeitraums (01.06 bis 14.06) nicht implementiert und am 17.06 als Day-Marathon nachgeholt. Damit ist die Restzeit bis zur Projekt-Abgabe (04 bis 05.07.2026) knapper geworden. Sprint 3 muss in ca. 11 Tagen abgeschlossen werden (statt geplant 14), damit Sprint 4 (Doku-Fokus) seine vollen 7 Tage behält.
+**Beschreibung:** Sprint 2 wurde wegen externem Arbeit-Problem während des geplanten Zeitraums (01.06 bis 14.06) nicht implementiert und am 17.06 als Day-Marathon nachgeholt. Damit ist die Restzeit bis zur Projekt-Abgabe (04 bis 05.07.2026) knapper geworden. Sprint 3 muss in ca. 11 Tagen abgeschlossen werden (statt geplant 14), damit Sprint 4 (Doku-Fokus) seine vollen 7 Tage behält.
 
 **Probability:** Mittel | **Impact:** Hoch (Risiko dass Sprint-3-Stories nicht vollständig fertig werden oder in Sprint 4 rutschen, was die Doku-Zeit weiter komprimieren würde) | **Score:** 6
 
@@ -460,9 +460,9 @@ Risiken mit Score ≥ 4 sind "Active Watch", Score ≥ 6 sind "High Priority".
 
 ---
 
-### R-P02: Berufliche und private Belastungen (HEKS-Arbeit, Privat)
+### R-P02: Berufliche und private Belastungen (Arbeit, Privat)
 
-**Beschreibung:** 10 bis 15 h pro Woche neben Vollzeit-Arbeit bei HEKS ist ambitioniert. Spitzen bei der Arbeit oder im Privat-Bereich können Sprint-Kapazität reduzieren.
+**Beschreibung:** 10 bis 15 h pro Woche neben Vollzeit-Arbeit ist ambitioniert. Spitzen bei der Arbeit oder im Privat-Bereich können Sprint-Kapazität reduzieren.
 
 **Probability:** Mittel | **Impact:** Mittel | **Score:** 4
 

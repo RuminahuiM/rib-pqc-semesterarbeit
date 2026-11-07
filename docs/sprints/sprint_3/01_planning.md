@@ -124,7 +124,7 @@ Mit aggregiertem AI-Multiplier aus Sprint 1 (6.4x) und Sprint 2 (13.6x Block-Ses
 | Risk-ID | Titel | Score | Sprint-3-Relevanz |
 |---|---|---|---|
 | R-S06 | Sprint-3-Komprimierung wegen Sprint-2-Verzögerung | 6 (Active) | Direkt relevant. 11 statt 14 Tage. Aggressive Defer-Strategie falls Halbzeit-Check rot. |
-| R-P02 | Berufliche Belastungen HEKS | 6 (Active, hochgestuft in Sprint 2) | Real eingetreten in Sprint 2. Falls Sprint 3 ebenfalls von Arbeit-Problem getroffen wird: Mentor-Update binnen 48h. |
+| R-P02 | Berufliche Belastungen | 6 (Active, hochgestuft in Sprint 2) | Real eingetreten in Sprint 2. Falls Sprint 3 ebenfalls von Arbeit-Problem getroffen wird: Mentor-Update binnen 48h. |
 | R-T03 | Mobile-OS-spezifische Crypto-Quirks | 4 (Active) | Direkt relevant für CRY-6 (Client-Crypto), APP-6 (secureClient). @noble-Library plus iOS-Quirks. |
 | R-T02 | @noble/post-quantum API-Instabilität | 4 (Active) | Direkt relevant für CRY-6. Version pinning Pflicht. |
 | R-T06 | Redis-Session-Store Bugs | 2 (Monitor) | Direkt relevant für SES-3. Integration-Tests mit echtem Redis bei Story-Start |

@@ -121,7 +121,7 @@ Effektive Arbeitstage abhängig vom Schedule plus Energie. Geplant:
 |---|---|---|---|
 | R-S04 | Doku-Zeit Sprint 4 zu kurz | 9 (kritisch) | Direkt relevant. 66 SP in 7 Tagen ist nur mit aggressive Defer-Bereitschaft machbar. Halbzeit-Check ist Schlüssel-Korrektur-Punkt. |
 | R-S06 | Sprint-3-Komprimierung | 6 Active | Faktisch in Sprint 4 als Carry-Over-Belastung eingetreten. Day-Marathon-Tag-1 ist Mitigation. |
-| R-P02 | Berufliche Belastungen HEKS | 6 Active | Falls in Sprint 4 Arbeit-Problem auftritt: Mentor-Update binnen 24-48h, Carry-Over plus alle Should-Stories sofort streichen. |
+| R-P02 | Berufliche Belastungen | 6 Active | Falls in Sprint 4 Arbeit-Problem auftritt: Mentor-Update binnen 24-48h, Carry-Over plus alle Should-Stories sofort streichen. |
 | R-T08 | Mobile-PQC-TLS-Limitation | Identifiziert | Nicht direkt in Sprint 4 lösbar, im Schlussbericht als ehrlicher Befund. |
 
 **Critical-Path-Definition für Sprint 4:**

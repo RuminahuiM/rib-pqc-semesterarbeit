@@ -39,7 +39,7 @@ decrypt later"-Angriffe (NSA Suite Quantum-Safe Crypto Empfehlung).
   Shor's-Algorithmus auf Quantum-Computern brechbar.
 
 - **PQC-Bericht-Wert:** Hybrid-TLS mit PQC-Cert ist eine seltene aber
-  zeigbare Komplett-PQC-Demo, sehr wertvoll fuer die HEKS-Semesterarbeit.
+  zeigbare Komplett-PQC-Demo, sehr wertvoll fuer die Semesterarbeit.
 
 - **Browser-Kompatibilitaet:** Self-signed Test-Cert ohne Trust-Chain wird
   vom Browser eh als untrusted markiert. ML-DSA-65-Sig wird vom Browser

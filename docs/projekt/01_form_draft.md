@@ -101,7 +101,7 @@ Vorgehen: Scrum, 1 Sprint 0 (Setup) + 4 zweiwöchige Sprints. Mentor-Termine als
 
 **Räume / Infrastruktur**
 
-Heimarbeitsplatz; bei Bedarf HEKS-Büro. Keine spezifische Cloud-Infrastruktur erforderlich.
+Heimarbeitsplatz; bei Bedarf Büro beim Arbeitgeber. Keine spezifische Cloud-Infrastruktur erforderlich.
 
 ---
 
